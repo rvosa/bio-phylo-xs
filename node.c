@@ -128,4 +128,5 @@ void set_raw_child(SV* pobj, SV* cobj) {
 	else {
 		_to_node(pobj)->first_daughter = child;
 	}
+	SvREFCNT_inc(cobj);
 }
