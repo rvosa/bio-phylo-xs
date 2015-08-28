@@ -2,18 +2,10 @@
 use strict;
 use warnings;
 use Node;
-use Devel::Peek;
+use Bio::Phylo::Forest::Node;
+use Benchmark qw(:all);
 
-# amazingly, this all works
-my $child = Node->new( '-branch_length' => 0.2342 );
-print $child->get_id, "\n";
-print $child->get_branch_length, "\n";
-
-my $parent = Node->new( '-branch_length' => 0.7346 );
-print $parent->get_id, "\n";
-print $parent->get_branch_length, "\n";
-
-$child->set_parent($parent);
-
-print $child->get_parent->get_branch_length, "\n";
-
+# C nodes
+my $child = Node->new;
+$child->set_raw_parent(Node->new);
+$child->get_parent->set_raw_child($child);
