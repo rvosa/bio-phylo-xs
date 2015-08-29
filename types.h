@@ -48,9 +48,9 @@ typedef struct {
 typedef struct Node {
 	Identifiable identifiable;
 	double branch_length;
-	SV* parent;
-	SV* first_daughter;
-	SV* next_sister;
+	Node* parent;
+	Node* first_daughter;
+	Node* next_sister;
 } Node;
 
 #endif
