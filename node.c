@@ -11,22 +11,13 @@ resort to using New.
 # include "types.h"
 
 SV* create(const char * classname) {
-	Node * node;
+	Node* node;
 	Newx(node, 1, Node);
 	node->first_daughter = NULL;
 	node->parent         = NULL;
 	node->next_sister    = NULL;
 	((Identifiable*)node)->_type = _NODE_;
 	return sv_setref_pv(newSViv(0), classname, (void *)node);	
-}
-
-double get_branch_length(SV* obj) {
-	return ((Node*)SvIV(SvRV(obj)))->branch_length;
-}
-
-void set_branch_length(SV* obj, double length) {
-	Node* node = (Node*)SvIV(SvRV(obj));
-	node->branch_length = length;
 }
 
 SV* _to_sv(Node* node) {
@@ -41,12 +32,19 @@ Node* _to_node(SV* obj) {
 	return (Node*)SvIV(SvRV(obj));
 }
 
+double get_branch_length(SV* obj) {
+	return _to_node(obj)->branch_length;
+}
+
+void set_branch_length(SV* obj, double length) {
+	_to_node(obj)->branch_length = length;
+}
+
 AV* get_children(SV* obj) {
 	AV* ret = newAV();
 	Node* child = _to_node(obj)->first_daughter;
 	while(child != NULL) {
 		SV* svc = _to_sv(child);
-		SvREFCNT_inc(svc);
 		av_push(ret, svc);
 		child = child->next_sister;
 	}
@@ -58,7 +56,6 @@ AV* get_ancestors(SV* obj) {
 	Node* parent = _to_node(obj)->parent;
 	while(parent != NULL) {
 		SV* svp = _to_sv(parent);
-		SvREFCNT_inc(svp);
 		av_push(ret, svp);
 		parent = parent->parent;
 	}
@@ -76,14 +73,12 @@ void _desc(Node* node, AV* set) {
 	Node* fd = node->first_daughter;
 	while(node != NULL) {
 		SV* svn = _to_sv(node);
-		SvREFCNT_inc(svn);
 		av_push(set, svn);
 		node = node->next_sister;
 		_desc(node, set);
 	}
 	while(fd != NULL) {
 		SV* svd = _to_sv(fd);
-		SvREFCNT_inc(svd);
 		av_push(set, svd);
 		fd = fd->first_daughter;
 		_desc(fd, set);
@@ -117,17 +112,37 @@ SV* get_parent(SV* obj) {
 	return _to_sv(_to_node(obj)->parent);
 }
 
-void set_raw_child(SV* pobj, SV* cobj) {
+void set_raw_child(SV* pobj, SV* cobj, ...) {	
+	Inline_Stack_Vars;	// handle variable argument list
+	
+	// determine where to place the child, 
+	// default -1 means at the end 
+	signed int position = -1;
+	if ( Inline_Stack_Items > 2 ) {
+		position = SvIV(Inline_Stack_Item(2));
+	}	
+	
+	// convert objects
 	Node* prev  = _to_node(pobj)->first_daughter;
 	Node* child = _to_node(cobj);
+	
+	// find previous sister
 	if ( prev != NULL ) {	
+		int i = 0;
 		while( prev->next_sister != NULL ) {
+			if ( position != -1 && i == position ) {
+				break;
+			}
 			prev = prev->next_sister;
+			i++;
 		}
+		Node* prevsis = prev->next_sister;
 		prev->next_sister = child;
+		child->next_sister = prevsis;
 	}
 	else {
 		_to_node(pobj)->first_daughter = child;
 	}
-	SvREFCNT_inc(cobj);
+	SvREFCNT_inc(cobj);	
+	Inline_Stack_Void; // handle variable argument list
 }
