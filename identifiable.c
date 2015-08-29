@@ -20,6 +20,10 @@ int get_id(SV* obj){
 	return ((Identifiable*)SvIV(SvRV(obj)))->id;
 }
 
+int _type(SV* obj){
+	return ((Identifiable*)SvIV(SvRV(obj)))->_type;
+}
+
 void identify(SV* obj){
 	Identifiable* identifiable = (Identifiable*)SvIV(SvRV(obj));
 	identifiable->id = idpool++;
