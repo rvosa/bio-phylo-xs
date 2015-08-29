@@ -16,6 +16,7 @@ SV* create(const char * classname) {
 	node->first_daughter = NULL;
 	node->parent         = NULL;
 	node->next_sister    = NULL;
+	((Identifiable*)node)->_type = _NODE_;
 	return sv_setref_pv(newSViv(0), classname, (void *)node);	
 }
 
