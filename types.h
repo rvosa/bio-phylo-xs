@@ -39,6 +39,8 @@ int idpool = 1;
 typedef struct {
     int id; // from idpool
     int _type; // from defines
+    int _container; // from defines
+    size_t _size; // set by child class
 } Identifiable;
 
 // the general idea is that we can
@@ -48,9 +50,9 @@ typedef struct {
 typedef struct Node {
 	Identifiable identifiable;
 	double branch_length;
-	Node* parent;
-	Node* first_daughter;
-	Node* next_sister;
+	SV* parent;
+	SV* first_daughter;
+	SV* next_sister;
 } Node;
 
 #endif
