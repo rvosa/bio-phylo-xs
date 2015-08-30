@@ -16,6 +16,11 @@ SV* create(const char * classname) {
 	return sv_setref_pv(newSViv(0), classname, (void *)identifiable);	
 }
 
+void initialize(SV* obj){
+	Identifiable* identifiable = (Identifiable*)SvIV(SvRV(obj));
+	identifiable->id = idpool++;
+}
+
 int get_id(SV* obj){
 	return ((Identifiable*)SvIV(SvRV(obj)))->id;
 }
@@ -24,7 +29,10 @@ int _type(SV* obj){
 	return ((Identifiable*)SvIV(SvRV(obj)))->_type;
 }
 
-void identify(SV* obj){
-	Identifiable* identifiable = (Identifiable*)SvIV(SvRV(obj));
-	identifiable->id = idpool++;
+int _container(SV* obj){
+	return ((Identifiable*)SvIV(SvRV(obj)))->_container;
+}
+
+size_t _size(SV* obj){
+	return ((Identifiable*)SvIV(SvRV(obj)))->_size;
 }
