@@ -17,6 +17,8 @@ SV* create(const char * classname) {
 	node->parent         = NULL;
 	node->next_sister    = NULL;
 	((Identifiable*)node)->_type = _NODE_;
+	((Identifiable*)node)->_container = _TREE_;
+	((Identifiable*)node)->_size = sizeof(Node);
 	return sv_setref_pv(newSViv(0), classname, (void *)node);	
 }
 
