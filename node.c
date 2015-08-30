@@ -13,12 +13,6 @@ resort to using New.
 SV* create(const char * classname) {
 	Node* node;
 	Newx(node, 1, Node);
-	node->first_daughter = NULL;
-	node->parent         = NULL;
-	node->next_sister    = NULL;
-	((Identifiable*)node)->_type = _NODE_;
-	((Identifiable*)node)->_container = _TREE_;
-	((Identifiable*)node)->_size = sizeof(Node);
 	return sv_setref_pv(newSViv(0), classname, (void *)node);	
 }
 
@@ -32,6 +26,16 @@ SV* _to_sv(Node* node) {
 
 Node* _to_node(SV* obj) {
 	return (Node*)SvIV(SvRV(obj));
+}
+
+void initialize(SV* obj) {
+	Node* node = _to_node(obj);
+	node->first_daughter = NULL;
+	node->parent         = NULL;
+	node->next_sister    = NULL;
+	((Identifiable*)node)->_type = _NODE_;
+	((Identifiable*)node)->_container = _TREE_;
+	((Identifiable*)node)->_size = sizeof(Node);	
 }
 
 double get_branch_length(SV* obj) {
