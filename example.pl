@@ -18,5 +18,5 @@ print Dumper($parent->get_children);
 Dump($child);
 
 if ( $child->_type == _NODE_ ) {
-	print "It's a node\n";
+	print "It's a ",$child->_size," byte node: ", $child->get_id, "\n";
 }
