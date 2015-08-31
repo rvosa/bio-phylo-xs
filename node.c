@@ -58,7 +58,8 @@ void _desc(SV* parent, AV* set);
 
 void _desc(SV* parent, AV* set) {
 	Listable* pl = (Listable*)SvIV(SvRV(parent));
-	for ( int i = 0; i < pl->used; i++ ) {
+	int i;
+	for ( i = 0; i < pl->used; i++ ) {
 		SV* child = pl->entities[i];
 		av_push(set, child);
 		_desc(child, set);

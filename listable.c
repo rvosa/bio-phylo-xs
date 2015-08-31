@@ -85,7 +85,8 @@ void splice_at_index(SV* obj, SV* element, int index) {
 		}
 		
 		// move any subsequent elements over
-		for ( int i = ( list->used - 1 ); i >= index; i-- ) {
+		int i;
+		for ( i = ( list->used - 1 ); i >= index; i-- ) {
 			list->entities[i+1] = list->entities[i];
 		}
 		list->entities[index] = element;
@@ -99,7 +100,8 @@ void splice_at_index(SV* obj, SV* element, int index) {
 AV* get_entities(SV* obj) {
 	Listable* list = (Listable*)SvIV(SvRV(obj));
 	AV* ret = newAV();
-	for ( int i = 0; i < list->used; i++ ) {
+	int i;
+	for ( i = 0; i < list->used; i++ ) {
 		av_push(ret, list->entities[i]);
 	}
 	return ret;

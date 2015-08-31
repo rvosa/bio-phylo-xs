@@ -45,7 +45,8 @@ int is_default(SV* obj) {
 
 SV* get_root(SV* obj) {
 	Listable* list = (Listable*)SvIV(SvRV(obj));
-	for ( int i = 0; i < list->used; i++ ) {
+	int i;
+	for ( i = 0; i < list->used; i++ ) {
 		Node* node = (Node*)SvIV(SvRV(list->entities[i]));
 		if ( node->parent == NULL ) {
 			SV* root = list->entities[i];
