@@ -2,21 +2,33 @@
 use strict;
 use warnings;
 use Node;
+use Tree;
 use Data::Dumper;
 use Benchmark qw(:all);
 use Bio::Phylo::Util::CONSTANT qw(:objecttypes);
 use Devel::Peek;
 
-# C nodes
-my $child = Node->new;
-my $parent = Node->new;
-$child->set_raw_parent($parent);
-$parent->set_raw_child($child);
-$parent->set_raw_child( Node->new => 1 );
-print Dumper($parent->get_children);
+my $tree = Tree->new;
+my $root = Node->new( 
+	'-rank'          => 'genus', 
+	'-branch_length' => 0.342, 
+	'-tree'          => $tree,
+	'-name'          => 'root',
+);
+$tree->insert($root);
 
-Dump($child);
-
-if ( $child->_type == _NODE_ ) {
-	print "It's a ",$child->_size," byte node: ", $child->get_id, "\n";
+for ( 1 .. 2 ) {
+	my $c = Node->new( 
+		'-rank'          => 'species', 
+		'-branch_length' => 0.789, 
+		'-tree'          => $tree,
+		'-name'          => "node$_",
+	);
+	$root->set_raw_child( $c );
+	$c->set_raw_parent( $root );
+	$tree->insert($c);
 }
+
+print $_->get_rank, "\n" for @{ $root->get_children };
+print $tree->get_root->get_rank, "\n";
+print $tree->to_newick;
