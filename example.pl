@@ -8,11 +8,16 @@ use Benchmark qw(:all);
 use Bio::Phylo::Util::CONSTANT qw(:objecttypes);
 use Devel::Peek;
 
+$|++;
+
 sub run {
+
+	# establish package names to call constructors on
 	my $prefix = shift || '';
 	my $tree_package = $prefix . 'Tree';
 	my $node_package = $prefix . 'Node';
 
+	# instantiate basal node in tree
 	my $tree = $tree_package->new;
 	my $root = $node_package->new( 
 		'-rank'          => 'genus', 
@@ -22,6 +27,7 @@ sub run {
 	);
 	$tree->insert($root);
 
+	# create two child nodes
 	for ( 1 .. 2 ) {
 		my $c = $node_package->new( 
 			'-rank'          => 'species', 
@@ -34,9 +40,11 @@ sub run {
 		$tree->insert($c);
 	}
 
-	$_->get_rank, for @{ $root->get_children };
-	$tree->get_root->get_rank;
-	$tree->to_newick;
+	# do some lookups
+	#print Dumper( $root->get_children );
+	#$_->get_rank, for @{ $root->get_children };
+	#$tree->get_root->get_rank;
+	#$tree->to_newick;
 }
 
 timethese(1000, {
