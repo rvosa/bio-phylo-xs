@@ -1,14 +1,6 @@
-/*
-Allocate memory with Newx if it's
-available - if it's an older perl
-that doesn't have Newx then we
-resort to using New.
-*/
-#ifndef Newx
-#  define Newx(v,n,t) New(0,v,n,t)
-#endif
-    
 # include "types.h"
+# include "identifiable.h"
+# include "node.h"
 
 SV* create(const char * classname) {
 	Node* node;
@@ -68,12 +60,7 @@ AV* get_ancestors(SV* obj) {
 	return ret;
 }
 
-AV* get_descendants(SV* obj) {
-	AV* ret = newAV();
-	Node* child = _to_node(obj)->first_daughter;
-	_desc(child, ret);
-	return ret;	
-}
+void _desc(Node* node, AV* set);
 
 void _desc(Node* node, AV* set) {
 	Node* fd = node->first_daughter;
@@ -89,6 +76,13 @@ void _desc(Node* node, AV* set) {
 		fd = fd->first_daughter;
 		_desc(fd, set);
 	}	
+}
+
+AV* get_descendants(SV* obj) {
+	AV* ret = newAV();
+	Node* child = _to_node(obj)->first_daughter;
+	_desc(child, ret);
+	return ret;	
 }
 
 void set_next_sister(SV* obj, SV* sobj) {

@@ -1,14 +1,5 @@
-/*
-Allocate memory with Newx if it's
-available - if it's an older perl
-that doesn't have Newx then we
-resort to using New.
-*/
-#ifndef Newx
-#  define Newx(v,n,t) New(0,v,n,t)
-#endif
-    
 # include "types.h"
+# include "identifiable.h"
 
 SV* create(const char * classname) {
 	Identifiable * identifiable;

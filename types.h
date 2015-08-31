@@ -1,9 +1,6 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-// gets incremented for each object
-int idpool = 1;
-
 // Bio::Phylo object type constants
 #define _NONE_ 1
 #define _NODE_ 2
@@ -36,23 +33,14 @@ int idpool = 1;
 #define _OPERATION_ 28
 #define _DATATYPE_ 29
 
-typedef struct {
-    int id; // from idpool
-    int _type; // from defines
-    int _container; // from defines
-    size_t _size; // set by child class
-} Identifiable;
-
-// the general idea is that we can
-// have inheritance and extension
-// by having the "superclass" struct
-// be the first member of the child struct
-typedef struct Node {
-	Identifiable identifiable;
-	double branch_length;
-	SV* parent;
-	SV* first_daughter;
-	SV* next_sister;
-} Node;
+/*
+Allocate memory with Newx if it's
+available - if it's an older perl
+that doesn't have Newx then we
+resort to using New.
+*/
+#ifndef Newx
+#  define Newx(v,n,t) New(0,v,n,t)
+#endif
 
 #endif
