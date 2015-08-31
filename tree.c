@@ -48,7 +48,9 @@ SV* get_root(SV* obj) {
 	for ( int i = 0; i < list->used; i++ ) {
 		Node* node = (Node*)SvIV(SvRV(list->entities[i]));
 		if ( node->parent == NULL ) {
-			return list->entities[i];
+			SV* root = list->entities[i];
+			SvREFCNT_inc(root);
+			return root;
 		}
 	}
 	return NULL;
