@@ -11,9 +11,9 @@ SV* create(const char * classname) {
 void initialize(SV* obj){
 	Listable* listable = (Listable*)SvIV(SvRV(obj));
 	listable->index = 0;
-	listable->size  = 1;
+	listable->size  = LISTABLE_INITIAL_SIZE;
 	listable->used  = 0;
-	listable->entities = malloc(sizeof(SV *));
+	listable->entities = malloc(sizeof(SV *) * LISTABLE_INITIAL_SIZE);
 }
 
 int can_contain(SV* obj, SV* element) {
