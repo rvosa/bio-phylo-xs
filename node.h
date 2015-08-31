@@ -1,12 +1,14 @@
 #ifndef NODE_H
 #define NODE_H
 
-typedef struct Node {
-	Identifiable identifiable;
+# include "listable.h"
+
+typedef struct {
+	Listable listable;
 	double branch_length;
-	struct Node* parent;
-	struct Node* first_daughter;
-	struct Node* next_sister;
+	SV* parent;
+	char * rank;
+	SV* tree;
 } Node;
 
 #endif

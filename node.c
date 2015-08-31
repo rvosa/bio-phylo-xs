@@ -1,5 +1,6 @@
 # include "types.h"
 # include "identifiable.h"
+# include "listable.h"
 # include "node.h"
 
 SV* create(const char * classname) {
@@ -22,9 +23,9 @@ Node* _to_node(SV* obj) {
 
 void initialize(SV* obj) {
 	Node* node = _to_node(obj);
-	node->first_daughter = NULL;
-	node->parent         = NULL;
-	node->next_sister    = NULL;
+	node->parent = NULL;
+	node->rank = NULL;
+	node->tree = NULL;
 	((Identifiable*)node)->_type = _NODE_;
 	((Identifiable*)node)->_container = _TREE_;
 	((Identifiable*)node)->_size = sizeof(Node);	
@@ -39,14 +40,7 @@ void set_branch_length(SV* obj, double length) {
 }
 
 AV* get_children(SV* obj) {
-	AV* ret = newAV();
-	Node* child = _to_node(obj)->first_daughter;
-	while(child != NULL) {
-		SV* svc = _to_sv(child);
-		av_push(ret, svc);
-		child = child->next_sister;
-	}
-	return ret;
+	return get_entities(obj);
 }
 
 AV* get_ancestors(SV* obj) {
@@ -60,56 +54,30 @@ AV* get_ancestors(SV* obj) {
 	return ret;
 }
 
-void _desc(Node* node, AV* set);
+void _desc(SV* parent, AV* set);
 
-void _desc(Node* node, AV* set) {
-	Node* fd = node->first_daughter;
-	while(node != NULL) {
-		SV* svn = _to_sv(node);
-		av_push(set, svn);
-		node = node->next_sister;
-		_desc(node, set);
-	}
-	while(fd != NULL) {
-		SV* svd = _to_sv(fd);
-		av_push(set, svd);
-		fd = fd->first_daughter;
-		_desc(fd, set);
+void _desc(SV* parent, AV* set) {
+	Listable* pl = (Listable*)SvIV(SvRV(parent));
+	for ( int i = 0; i < pl->used; i++ ) {
+		SV* child = pl->entities[i];
+		av_push(set, child);
+		_desc(child, set);
 	}	
 }
 
 AV* get_descendants(SV* obj) {
-	AV* ret = newAV();
-	Node* child = _to_node(obj)->first_daughter;
-	_desc(child, ret);
+	AV* ret = newAV();	
+	_desc(obj, ret);
 	return ret;	
 }
 
-void set_next_sister(SV* obj, SV* sobj) {
-	_to_node(obj)->next_sister = _to_node(sobj);
-	SvREFCNT_inc(sobj);
-}
-
-SV* get_next_sister(SV* obj) {
-	return _to_sv(_to_node(obj)->next_sister);
-}
-
-void set_first_daughter(SV* pobj, SV* cobj) {
-	_to_node(pobj)->first_daughter = _to_node(cobj);
-	SvREFCNT_inc(cobj);
-}
-
-SV* get_first_daughter(SV* obj) {
-	return _to_sv(_to_node(obj)->first_daughter);
-}
-
 void set_raw_parent(SV* cobj, SV* pobj) {
-	_to_node(cobj)->parent = _to_node(pobj);
+	_to_node(cobj)->parent = pobj;
 	SvREFCNT_inc(pobj);
 }
 
 SV* get_parent(SV* obj) {
-	return _to_sv(_to_node(obj)->parent);
+	return _to_node(obj)->parent;
 }
 
 void set_raw_child(SV* pobj, SV* cobj, ...) {	
@@ -122,27 +90,29 @@ void set_raw_child(SV* pobj, SV* cobj, ...) {
 		position = SvIV(Inline_Stack_Item(2));
 	}	
 	
-	// convert objects
-	Node* prev  = _to_node(pobj)->first_daughter;
-	Node* child = _to_node(cobj);
-	
-	// find previous sister
-	if ( prev != NULL ) {	
-		int i = 0;
-		while( prev->next_sister != NULL ) {
-			if ( position != -1 && i == position ) {
-				break;
-			}
-			prev = prev->next_sister;
-			i++;
-		}
-		Node* prevsis = prev->next_sister;
-		prev->next_sister = child;
-		child->next_sister = prevsis;
+	if ( position == -1 ) {
+		insert(pobj, cobj);
 	}
 	else {
-		_to_node(pobj)->first_daughter = child;
+		insert_at_index(pobj,cobj,position);
 	}
-	SvREFCNT_inc(cobj);	
+
 	Inline_Stack_Void; // handle variable argument list
+}
+
+char* get_rank(SV* obj) {
+	return _to_node(obj)->rank;
+}
+
+void set_rank(SV* obj, char * rank) {
+	_to_node(obj)->rank = savepv(rank);
+}
+
+SV* get_tree(SV* obj) {
+	return _to_node(obj)->tree;
+}
+
+void set_tree(SV* obj, SV* tree) {
+	_to_node(obj)->tree = tree;
+	SvREFCNT_inc(tree);
 }
