@@ -40,14 +40,13 @@ sub run {
 		$tree->insert($c);
 	}
 
-	# do some lookups
-	#print Dumper( $root->get_children );
-	#$_->get_rank, for @{ $root->get_children };
-	#$tree->get_root->get_rank;
-	#$tree->to_newick;
+	# do some lookups	
+	$_->get_rank, for @{ $root->get_children };
+	$tree->get_root->get_rank;
+	$tree->to_newick;
 }
 
-timethese(1000, {
+timethese(10000, {
    'C'    => sub { run() },
    'Perl' => sub { run('Bio::Phylo::Forest::') },
 });

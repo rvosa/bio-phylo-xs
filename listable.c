@@ -5,20 +5,23 @@
 SV* create(const char * classname) {
 	Listable * listable;
 	Newx(listable, 1, Listable);
-	return sv_setref_pv(newSViv(0), classname, (void *)listable);	
+	SV* self = sv_setref_pv(newSViv(0), classname, (void *)listable);	
+	initialize_listable(self);
+	return self;
 }
 
-void initialize(SV* obj){
-	Listable* listable = (Listable*)SvIV(SvRV(obj));
+void initialize_listable(SV* self){
+	initialize_identifiable(self);
+	Listable* listable = (Listable*)SvIV(SvRV(self));
 	listable->index = 0;
 	listable->size  = LISTABLE_INITIAL_SIZE;
 	listable->used  = 0;
 	listable->entities = malloc(sizeof(SV *) * LISTABLE_INITIAL_SIZE);
 }
 
-int can_contain(SV* obj, SV* element) {
+int can_contain(SV* self, SV* element) {
 
-	Identifiable* listid = (Identifiable*)SvIV(SvRV(obj));
+	Identifiable* listid = (Identifiable*)SvIV(SvRV(self));
 	Identifiable* eltid = (Identifiable*)SvIV(SvRV(element));
 	
 	// in most cases, a simple comparison between the _type
@@ -40,9 +43,9 @@ int can_contain(SV* obj, SV* element) {
 	}
 }
 
-void insert(SV* obj, SV* element) {
-	if ( can_contain(obj,element) ) {
-		Listable* list = (Listable*)SvIV(SvRV(obj));
+void insert(SV* self, SV* element) {
+	if ( can_contain(self,element) ) {
+		Listable* list = (Listable*)SvIV(SvRV(self));
 	
 		// resize if needed
 		if ( list->used == list->size ) {
@@ -57,9 +60,9 @@ void insert(SV* obj, SV* element) {
 	}
 }
 
-void insert_at_index(SV* obj, SV* element, int index) {		
-	if ( can_contain(obj,element) ) {
-		Listable* list = (Listable*)SvIV(SvRV(obj));
+void insert_at_index(SV* self, SV* element, int index) {		
+	if ( can_contain(self,element) ) {
+		Listable* list = (Listable*)SvIV(SvRV(self));
 	
 		// resize if needed
 		if ( index > ( list->size - 1 ) ) {
@@ -74,9 +77,9 @@ void insert_at_index(SV* obj, SV* element, int index) {
 	}
 }
 
-void splice_at_index(SV* obj, SV* element, int index) {
-	if ( can_contain(obj,element) ) {
-		Listable* list = (Listable*)SvIV(SvRV(obj));
+void splice_at_index(SV* self, SV* element, int index) {
+	if ( can_contain(self,element) ) {
+		Listable* list = (Listable*)SvIV(SvRV(self));
 	
 		// resize if needed
 		if ( ( list->used + 1 ) == list->size ) {
@@ -97,8 +100,8 @@ void splice_at_index(SV* obj, SV* element, int index) {
 	}
 }
 
-AV* get_entities(SV* obj) {
-	Listable* list = (Listable*)SvIV(SvRV(obj));
+AV* get_entities(SV* self) {
+	Listable* list = (Listable*)SvIV(SvRV(self));
 	AV* ret = newAV();
 	int i;
 	for ( i = 0; i < list->used; i++ ) {

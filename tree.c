@@ -7,11 +7,14 @@
 SV* create(const char * classname) {
 	Tree * tree;
 	Newx(tree, 1, Tree);
-	return sv_setref_pv(newSViv(0), classname, (void *)tree);	
+	SV* self = sv_setref_pv(newSViv(0), classname, (void *)tree);	
+	initialize_tree(self);
+	return self;
 }
 
-void initialize(SV* obj){
-	Tree* tree = (Tree*)SvIV(SvRV(obj));
+void initialize_tree(SV* self){
+	initialize_listable(self);
+	Tree* tree = (Tree*)SvIV(SvRV(self));
 	tree->is_unrooted = 0;
 	tree->is_default = 0;
 	((Identifiable*)tree)->_type = _TREE_;
@@ -20,31 +23,31 @@ void initialize(SV* obj){
 	
 }
 
-SV* set_as_unrooted(SV* obj){
-	Tree* tree = (Tree*)SvIV(SvRV(obj));
+SV* set_as_unrooted(SV* self){
+	Tree* tree = (Tree*)SvIV(SvRV(self));
 	tree->is_unrooted = 1;
-	return obj;
+	return self;
 }
 
-SV* set_as_default(SV* obj) {
-	Tree* tree = (Tree*)SvIV(SvRV(obj));
+SV* set_as_default(SV* self) {
+	Tree* tree = (Tree*)SvIV(SvRV(self));
 	tree->is_default = 1;
-	return obj;
+	return self;
 }
 
-SV* set_not_default(SV* obj) {
-	Tree* tree = (Tree*)SvIV(SvRV(obj));
+SV* set_not_default(SV* self) {
+	Tree* tree = (Tree*)SvIV(SvRV(self));
 	tree->is_default = 0;
-	return obj;
+	return self;
 }
 
-int is_default(SV* obj) {
-	Tree* tree = (Tree*)SvIV(SvRV(obj));
+int is_default(SV* self) {
+	Tree* tree = (Tree*)SvIV(SvRV(self));
 	return tree->is_default;
 }
 
-SV* get_root(SV* obj) {
-	Listable* list = (Listable*)SvIV(SvRV(obj));
+SV* get_root(SV* self) {
+	Listable* list = (Listable*)SvIV(SvRV(self));
 	int i;
 	for ( i = 0; i < list->used; i++ ) {
 		Node* node = (Node*)SvIV(SvRV(list->entities[i]));
