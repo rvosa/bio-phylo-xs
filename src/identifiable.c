@@ -1,5 +1,5 @@
-# include "types.h"
-# include "identifiable.h"
+# include "src/types.h"
+# include "src/identifiable.h"
 
 SV* create(const char * classname) {
 	Identifiable * identifiable;

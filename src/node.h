@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-# include "listable.h"
+# include "src/listable.h"
 
 void initialize_node(SV* self);
 

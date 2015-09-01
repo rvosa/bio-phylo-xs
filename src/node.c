@@ -1,7 +1,7 @@
-# include "types.h"
-# include "identifiable.h"
-# include "listable.h"
-# include "node.h"
+# include "src/types.h"
+# include "src/identifiable.h"
+# include "src/listable.h"
+# include "src/node.h"
 
 SV* create(const char * classname) {
 	Node* node;

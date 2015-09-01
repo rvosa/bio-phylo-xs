@@ -1,5 +1,5 @@
 package Bio::PhyloXS::Identifiable;
-use Inline C => './identifiable.c';
+use Inline C => 'src/identifiable.c';
 
 sub new {
 	my $class = shift;	
