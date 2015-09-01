@@ -69,6 +69,11 @@ void insert_at_index(SV* self, SV* element, int index) {
 			list->size = index + 1;
 			list->entities = (SV **) realloc(list->entities, list->size * sizeof(SV*));
 		}
+		
+		if ( index >= list->used ) {
+			list->used = index + 1;
+		}
+		
 		list->entities[index] = element;
 		SvREFCNT_inc(element);
 	}
