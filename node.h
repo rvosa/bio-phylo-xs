@@ -3,6 +3,8 @@
 
 # include "listable.h"
 
+void initialize_node(SV* self);
+
 typedef struct {
 	Listable listable;
 	double branch_length;

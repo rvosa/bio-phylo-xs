@@ -11,4 +11,6 @@ typedef struct {
     size_t _size; // set by child class
 } Identifiable;
 
+void initialize_identifiable(SV* self);
+
 #endif

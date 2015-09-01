@@ -3,6 +3,8 @@
 
 # include "listable.h"
 
+void initialize_tree(SV* self);
+
 typedef struct {
 	Listable listable;
 	int is_default;
