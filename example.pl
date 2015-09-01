@@ -1,14 +1,9 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Node;
-use Tree;
-use Data::Dumper;
+use Bio::PhyloXS::Forest::Node;
+use Bio::PhyloXS::Forest::Tree;
 use Benchmark qw(:all);
-use Bio::Phylo::Util::CONSTANT qw(:objecttypes);
-use Devel::Peek;
-
-$|++;
 
 sub run {
 
@@ -47,6 +42,6 @@ sub run {
 }
 
 timethese(10000, {
-   'C'    => sub { run() },
+   'C'    => sub { run('Bio::PhyloXS::Forest::') },
    'Perl' => sub { run('Bio::Phylo::Forest::') },
 });
