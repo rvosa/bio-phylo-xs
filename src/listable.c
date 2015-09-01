@@ -1,6 +1,6 @@
 # include "src/types.h"
-# include "src/identifiable.h"
-# include "src/listable.h"
+# include "src/Identifiable.h"
+# include "src/Listable.h"
 
 SV* create(const char * classname) {
 	Listable * listable;

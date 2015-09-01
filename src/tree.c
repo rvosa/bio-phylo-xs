@@ -1,8 +1,8 @@
 # include "src/types.h"
-# include "src/identifiable.h"
-# include "src/listable.h"
-# include "src/node.h"
-# include "src/tree.h"
+# include "src/Identifiable.h"
+# include "src/Listable.h"
+# include "src/Node.h"
+# include "src/Tree.h"
 
 SV* create(const char * classname) {
 	Tree * tree;
