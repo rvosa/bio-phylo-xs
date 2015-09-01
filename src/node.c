@@ -29,6 +29,7 @@ void initialize_node(SV* self) {
 	node->parent = NULL;
 	node->rank = NULL;
 	node->tree = NULL;
+	node->branch_length = 0.0;
 	((Identifiable*)node)->_type = _NODE_;
 	((Identifiable*)node)->_container = _TREE_;
 	((Identifiable*)node)->_size = sizeof(Node);	
@@ -89,6 +90,29 @@ AV* get_descendants(SV* self) {
 	return ret;	
 }
 
+void _ido(SV* parent, int *tf, int id);
+
+void _ido(SV* parent, int *tf, int id) {
+	Listable* pl = (Listable*)SvIV(SvRV(parent));
+	int i;
+	for ( i = 0; i < pl->used; i++ ) {
+		SV* child = pl->entities[i];
+		if ( ((Identifiable*)SvIV(SvRV(child)))->id == id ) {
+			*tf = 1;
+			break;
+		}
+		_ido(child, tf, id);
+	}	
+}
+
+// tests if invocant is descendant of argument
+int is_descendant_of(SV* self, SV* other) {
+	int id = ((Identifiable*)SvIV(SvRV(self)))->id;
+	int ret = 0;
+	_ido(other,&ret,id);
+	return ret;
+}
+
 void set_raw_parent(SV* self, SV* parent) {
 	_to_node(self)->parent = parent;
 	SvREFCNT_inc(parent);
@@ -106,7 +130,7 @@ void set_raw_child(SV* self, SV* child, ...) {
 	signed int position = -1;
 	if ( Inline_Stack_Items > 2 ) {
 		position = SvIV(Inline_Stack_Item(2));
-	}	
+	}
 	
 	if ( position == -1 ) {
 		insert(self, child);
