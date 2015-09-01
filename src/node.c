@@ -14,7 +14,7 @@ SV* create(const char * classname) {
 SV* _to_sv(Node* node) {
 	SV* self = newSViv((IV)node);
   	SV* obj_ref = newRV_noinc(self);
-  	sv_bless(obj_ref, gv_stashpv("Node", TRUE));
+  	sv_bless(obj_ref, gv_stashpv("Bio::PhyloXS::Forest::Node", TRUE));
 	SvREADONLY_on(self);
 	return obj_ref;
 }
