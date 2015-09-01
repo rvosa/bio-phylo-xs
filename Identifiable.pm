@@ -1,4 +1,4 @@
-package Identifiable;
+package Bio::PhyloXS::Identifiable;
 use Inline C => './identifiable.c';
 
 sub new {
