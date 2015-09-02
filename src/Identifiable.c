@@ -1,30 +1,31 @@
 # include "src/types.h"
 # include "src/Identifiable.h"
 
-SV* create(const char * classname) {
-	Identifiable * identifiable;
-	Newx(identifiable, 1, Identifiable);
-	SV* self = sv_setref_pv(newSViv(0), classname, (void *)identifiable);	
-	initialize_identifiable(self);
+void initialize_identifiable(Identifiable* self){
+	self->id = idpool++;
 }
 
-void initialize_identifiable(SV* self){
-	Identifiable* identifiable = (Identifiable*)SvIV(SvRV(self));
-	identifiable->id = idpool++;
+int get_id(Identifiable* self){
+	return self->id;
 }
 
-int get_id(SV* self){
-	return ((Identifiable*)SvIV(SvRV(self)))->id;
+int _type(Identifiable* self){
+	return self->_type;
 }
 
-int _type(SV* self){
-	return ((Identifiable*)SvIV(SvRV(self)))->_type;
+int _container(Identifiable* self){
+	return self->_container;
 }
 
-int _container(SV* self){
-	return ((Identifiable*)SvIV(SvRV(self)))->_container;
+size_t _size(Identifiable* self){
+	return self->_size;
 }
 
-size_t _size(SV* self){
-	return ((Identifiable*)SvIV(SvRV(self)))->_size;
+SV* sv(Identifiable* self) {
+	return self->sv;
+}
+
+void destroy_identifiable(Identifiable* self) {
+	Safefree(self->sv);
+	Safefree(self);
 }

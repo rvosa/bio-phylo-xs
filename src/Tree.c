@@ -4,58 +4,70 @@
 # include "src/Node.h"
 # include "src/Tree.h"
 
-SV* create(const char * classname) {
-	Tree * tree;
-	Newx(tree, 1, Tree);
-	SV* self = sv_setref_pv(newSViv(0), classname, (void *)tree);	
-	initialize_tree(self);
+Tree* create(const char * classname) {
+    Tree *self;
+
+    /* allocate and initialize struct */
+    New(0, self, 1, Tree);
+    initialize_tree(self);
+
+    /* create perl object and ref; store pointer to object in struct */
+    SV* perlref = newSViv((IV)self);
+    SV* obj_ref = newRV_noinc(perlref);
+    sv_bless(obj_ref, gv_stashpv(classname, TRUE));
+    SvREADONLY_on(perlref);
+    ((Identifiable*)self)->sv = obj_ref;
+    SvREFCNT_inc(obj_ref);
+
+    return self;	
+}
+
+void initialize_tree(Tree* self){
+	initialize_listable((Listable*)self);
+	self->is_unrooted = 0;
+	self->is_default = 0;
+	((Identifiable*)self)->_type = _TREE_;
+	((Identifiable*)self)->_container = _FOREST_;
+	((Identifiable*)self)->_size = sizeof(Tree);	
+}
+
+Tree* set_as_unrooted(Tree* self){
+	self->is_unrooted = 1;
 	return self;
 }
 
-void initialize_tree(SV* self){
-	initialize_listable(self);
-	Tree* tree = (Tree*)SvIV(SvRV(self));
-	tree->is_unrooted = 0;
-	tree->is_default = 0;
-	((Identifiable*)tree)->_type = _TREE_;
-	((Identifiable*)tree)->_container = _FOREST_;
-	((Identifiable*)tree)->_size = sizeof(Tree);	
-	
-}
-
-SV* set_as_unrooted(SV* self){
-	Tree* tree = (Tree*)SvIV(SvRV(self));
-	tree->is_unrooted = 1;
+Tree* set_as_default(Tree* self) {
+	self->is_default = 1;
 	return self;
 }
 
-SV* set_as_default(SV* self) {
-	Tree* tree = (Tree*)SvIV(SvRV(self));
-	tree->is_default = 1;
+Tree* set_not_default(Tree* self) {
+	self->is_default = 0;
 	return self;
 }
 
-SV* set_not_default(SV* self) {
-	Tree* tree = (Tree*)SvIV(SvRV(self));
-	tree->is_default = 0;
-	return self;
+int is_default(Tree* self) {
+	return self->is_default;
 }
 
-int is_default(SV* self) {
-	Tree* tree = (Tree*)SvIV(SvRV(self));
-	return tree->is_default;
-}
-
-SV* get_root(SV* self) {
-	Listable* list = (Listable*)SvIV(SvRV(self));
+Node* get_root(Tree* self) {
+	Listable* list = (Listable*)self;
+	warn("getting root");
 	int i;
+	printf("nodes: %d\n",list->used);
 	for ( i = 0; i < list->used; i++ ) {
-		Node* node = (Node*)SvIV(SvRV(list->entities[i]));
-		if ( node->parent == NULL ) {
-			SV* root = list->entities[i];
-			SvREFCNT_inc(root);
-			return root;
+		warn("casting node\n");
+		Node* node = (Node*)list->entities[i];
+		printf("checking node %d\n",i);
+		if ( node->parent == NULL ) {			
+			SvREFCNT_inc(((Identifiable*)node)->sv);
+			return node;
 		}
 	}
 	return NULL;
+}
+
+void destroy_tree(Tree* self) {
+	destroy_listable((Listable*)self);
+	Safefree(self);
 }

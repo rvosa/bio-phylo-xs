@@ -13,4 +13,13 @@ sub new {
 	return $self;
 }
 
+sub DESTROY {
+	my $self = shift;
+	warn "destroying $self";
+	my $class = ref $self;
+	$class =~ s/.+://;
+	my $destructor = 'destroy_' . lc $class;
+	$self->$destructor;
+}
+
 __PACKAGE__;

@@ -2,15 +2,16 @@
 #define NODE_H
 
 # include "src/Listable.h"
+# include "src/Tree.h"
 
-void initialize_node(SV* self);
-
-typedef struct {
+typedef struct Node {
 	Listable listable;
 	double branch_length;
-	SV* parent;
+	struct Node* parent;
 	char * rank;
-	SV* tree;
+	Tree* tree;
 } Node;
+
+void initialize_node(Node* self);
 
 #endif

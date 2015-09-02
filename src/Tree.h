@@ -3,12 +3,12 @@
 
 # include "src/Listable.h"
 
-void initialize_tree(SV* self);
-
 typedef struct {
 	Listable listable;
 	int is_default;
 	int is_unrooted;
 } Tree;
+
+void initialize_tree(Tree* self);
 
 #endif

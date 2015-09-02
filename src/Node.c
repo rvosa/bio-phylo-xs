@@ -3,101 +3,97 @@
 # include "src/Listable.h"
 # include "src/Node.h"
 
-SV* create(const char * classname) {
-	Node* node;
-	Newx(node, 1, Node);
-	SV* self = sv_setref_pv(newSViv(0), classname, (void *)node);
-	initialize_node(self);
-	return self;
+Node* create(const char * classname) {
+    Node *self;
+
+    /* allocate and initialize struct */
+    New(0, self, 1, Node);
+    initialize_node(self);
+
+    /* create perl object and ref; store pointer to object in struct */
+    SV* perlref = newSViv((IV)self);
+    SV* obj_ref = newRV_noinc(perlref);
+    sv_bless(obj_ref, gv_stashpv(classname, TRUE));
+    SvREADONLY_on(perlref);
+    ((Identifiable*)self)->sv = obj_ref;
+    SvREFCNT_inc(obj_ref);
+
+    return self;
 }
 
-SV* _to_sv(Node* node) {
-	SV* self = newSViv((IV)node);
-  	SV* obj_ref = newRV_noinc(self);
-  	sv_bless(obj_ref, gv_stashpv("Bio::PhyloXS::Forest::Node", TRUE));
-	SvREADONLY_on(self);
-	return obj_ref;
+void initialize_node(Node* self) {
+	initialize_listable((Listable*)self);
+	self->parent = NULL;
+	self->rank = NULL;
+	self->tree = NULL;
+	self->branch_length = 0.0;
+	((Identifiable*)self)->_type = _NODE_;
+	((Identifiable*)self)->_container = _TREE_;
+	((Identifiable*)self)->_size = sizeof(Node);	
 }
 
-Node* _to_node(SV* self) {
-	return (Node*)SvIV(SvRV(self));
+double get_branch_length(Node* self) {
+	return self->branch_length;
 }
 
-void initialize_node(SV* self) {
-	initialize_listable(self);
-	Node* node = _to_node(self);
-	node->parent = NULL;
-	node->rank = NULL;
-	node->tree = NULL;
-	node->branch_length = 0.0;
-	((Identifiable*)node)->_type = _NODE_;
-	((Identifiable*)node)->_container = _TREE_;
-	((Identifiable*)node)->_size = sizeof(Node);	
+void set_branch_length(Node* self, double length) {
+	self->branch_length = length;
 }
 
-double get_branch_length(SV* self) {
-	return _to_node(self)->branch_length;
+AV* get_children(Node* self) {
+	return get_entities((Listable*)self);
 }
 
-void set_branch_length(SV* self, double length) {
-	_to_node(self)->branch_length = length;
-}
-
-AV* get_children(SV* self) {
-	return get_entities(self);
-}
-
-AV* get_ancestors(SV* self) {
+AV* get_ancestors(Node* self) {
 	AV* ret = newAV();
-	Node* parent = _to_node(self)->parent;
+	Node* parent = self->parent;
 	while(parent != NULL) {
-		SV* svp = _to_sv(parent);
-		av_push(ret, svp);
+		av_push(ret, ((Identifiable*)parent)->sv);
 		parent = parent->parent;
 	}
 	return ret;
 }
 
-void _desc(SV* parent, AV* set);
+void _desc(Node* parent, AV* set);
 
-void _desc(SV* parent, AV* set) {
-	Listable* pl = (Listable*)SvIV(SvRV(parent));
+void _desc(Node* parent, AV* set) {
+	Listable* pl = (Listable*)parent;
 	int i;
 	for ( i = 0; i < pl->used; i++ ) {
-		SV* child = pl->entities[i];
-		av_push(set, child);
+		Node* child = (Node*)pl->entities[i];
+		av_push(set, ((Identifiable*)child)->sv);
 		_desc(child, set);
 	}	
 }
 
-SV* get_first_daughter(SV* self) {
-	Listable* pl = (Listable*)SvIV(SvRV(self));
+Node* get_first_daughter(Node* self) {
+	Listable* pl = (Listable*)self;
 	if ( pl->used > 0 ) {
-		return pl->entities[0];
+		return (Node*)pl->entities[0];
 	}
 	else {
 		return NULL;
 	}
 }
 
-int is_terminal(SV* self) {
-	return ((Listable*)SvIV(SvRV(self)))->used == 0;
+int is_terminal(Node* self) {
+	return ((Listable*)self)->used == 0;
 }
 
-AV* get_descendants(SV* self) {
+AV* get_descendants(Node* self) {
 	AV* ret = newAV();	
 	_desc(self, ret);
 	return ret;	
 }
 
-void _ido(SV* parent, int *tf, int id);
+void _ido(Node* parent, int *tf, int id);
 
-void _ido(SV* parent, int *tf, int id) {
-	Listable* pl = (Listable*)SvIV(SvRV(parent));
+void _ido(Node* parent, int *tf, int id) {
+	Listable* pl = (Listable*)parent;
 	int i;
 	for ( i = 0; i < pl->used; i++ ) {
-		SV* child = pl->entities[i];
-		if ( ((Identifiable*)SvIV(SvRV(child)))->id == id ) {
+		Node* child = (Node*)pl->entities[i];
+		if ( ((Identifiable*)child)->id == id ) {
 			*tf = 1;
 			break;
 		}
@@ -106,23 +102,27 @@ void _ido(SV* parent, int *tf, int id) {
 }
 
 // tests if invocant is descendant of argument
-int is_descendant_of(SV* self, SV* other) {
-	int id = ((Identifiable*)SvIV(SvRV(self)))->id;
+int is_descendant_of(Node* self, Node* other) {
+	int id = ((Identifiable*)self)->id;
 	int ret = 0;
 	_ido(other,&ret,id);
 	return ret;
 }
 
-void set_raw_parent(SV* self, SV* parent) {
-	_to_node(self)->parent = parent;
-	SvREFCNT_inc(parent);
+Node* set_raw_parent(Node* self, Node* parent) {
+	self->parent = parent;
+	SvREFCNT_inc(((Identifiable*)parent)->sv);
+	return parent;
 }
 
-SV* get_parent(SV* self) {
-	return _to_node(self)->parent;
+Node* get_parent(Node* self){
+	if ( self->parent != NULL ) {
+		SvREFCNT_inc(((Identifiable*)self->parent)->sv);
+	}
+	return self->parent;
 }
 
-void set_raw_child(SV* self, SV* child, ...) {	
+void set_raw_child(Node* self, Node* child, ...) {	
 	Inline_Stack_Vars;	// handle variable argument list
 	
 	// determine where to place the child, 
@@ -133,28 +133,33 @@ void set_raw_child(SV* self, SV* child, ...) {
 	}
 	
 	if ( position == -1 ) {
-		insert(self, child);
+		insert((Listable*)self, (Identifiable*)child);
 	}
 	else {
-		insert_at_index(self,child,position);
+		insert_at_index((Listable*)self,(Identifiable*)child,position);
 	}
 
 	Inline_Stack_Void; // handle variable argument list
 }
 
-char* get_rank(SV* self) {
-	return _to_node(self)->rank;
+char* get_rank(Node* self) {
+	return self->rank;
 }
 
-void set_rank(SV* obj, char * rank) {
-	_to_node(obj)->rank = savepv(rank);
+void set_rank(Node* self, char * rank) {
+	self->rank = savepv(rank);
 }
 
-SV* get_tree(SV* obj) {
-	return _to_node(obj)->tree;
+Tree* get_tree(Node* self) {
+	return self->tree;
 }
 
-void set_tree(SV* obj, SV* tree) {
-	_to_node(obj)->tree = tree;
-	SvREFCNT_inc(tree);
+void set_tree(Node* self, Tree* tree) {
+	self->tree = tree;
+}
+
+void destroy_node(Node* self) {
+	destroy_listable((Listable*)self);
+	Safefree(self->rank);
+	Safefree(self);
 }

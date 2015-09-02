@@ -3,18 +3,21 @@
 
 #define LISTABLE_INITIAL_SIZE 10
 
-void insert_at_index(SV* obj, SV* element, int index);
-void insert(SV* obj, SV* element);
-AV* get_entities(SV* obj);
-void splice_at_index(SV* obj, SV* element, int index);
-void initialize_listable(SV* self);
+# include "src/Identifiable.h"
 
 typedef struct {
 	Identifiable identifiable;
-    SV **entities;
+    Identifiable **entities;
     int index;
     size_t used;
     size_t size;
 } Listable;
+
+void initialize_listable(Listable* self);
+void insert_at_index(Listable* self, Identifiable* element, int index);
+void insert(Listable* self, Identifiable* element);
+AV* get_entities(Listable* self);
+void splice_at_index(Listable* self, Identifiable* element, int index);
+void destroy_listable(Listable* self);
 
 #endif

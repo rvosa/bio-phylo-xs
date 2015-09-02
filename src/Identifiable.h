@@ -9,8 +9,10 @@ typedef struct {
     int _type; // from defines
     int _container; // from defines
     size_t _size; // set by child class
+    SV* sv; // reference to perl struct
 } Identifiable;
 
-void initialize_identifiable(SV* self);
+void initialize_identifiable(Identifiable* self);
+void destroy_identifiable(Identifiable* self);
 
 #endif
