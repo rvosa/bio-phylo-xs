@@ -1,5 +1,6 @@
 package Bio::PhyloXS::Identifiable;
 use Inline C => 'src/Identifiable.c';
+use Carp;
 
 sub new {
 	my $class = shift;	
@@ -15,7 +16,7 @@ sub new {
 
 sub DESTROY {
 	my $self = shift;
-	warn "destroying $self";
+	carp "destroying $self";
 	my $class = ref $self;
 	$class =~ s/.+://;
 	my $destructor = 'destroy_' . lc $class;
