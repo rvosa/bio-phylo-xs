@@ -7,7 +7,7 @@ void initialize_listable(Listable* self){
 	self->index = 0;
 	self->size  = LISTABLE_INITIAL_SIZE;
 	self->used  = 0;
-	self->entities = malloc(sizeof(SV *) * LISTABLE_INITIAL_SIZE);
+	self->entities = malloc(sizeof(Identifiable *) * LISTABLE_INITIAL_SIZE);
 }
 
 int can_contain(Listable* self, Identifiable* element) {
@@ -41,7 +41,7 @@ void insert(Listable* self, Identifiable* element) {
 			self->entities = (Identifiable **) realloc(self->entities, self->size * sizeof(Identifiable*));
 		}
 		self->entities[self->used++] = element;
-		SvREFCNT_inc(element->sv);
+		SvREFCNT_inc(element->ref);
 	}
 	else {
 		croak("Object mismatch!");
@@ -62,7 +62,7 @@ void insert_at_index(Listable* self, Identifiable* element, int index) {
 		}
 		
 		self->entities[index] = element;
-		SvREFCNT_inc(element->sv);
+		SvREFCNT_inc(element->ref);
 	}
 	else {
 		croak("Object mismatch!");
@@ -84,7 +84,7 @@ void splice_at_index(Listable* self, Identifiable* element, int index) {
 			self->entities[i+1] = self->entities[i];
 		}
 		self->entities[index] = element;
-		SvREFCNT_inc(element->sv);
+		SvREFCNT_inc(element->ref);
 	}
 	else {
 		croak("Object mismatch!");
@@ -103,9 +103,8 @@ AV* get_entities(Listable* self) {
 void destroy_listable(Listable* self) {
 	destroy_identifiable((Identifiable*)self);
 	int i;
-	for ( i = 0; i < self->used; i++ ) {
-		SvREFCNT_dec(self->entities[i]->sv);
+	for ( i = 0; i < self->used; i++ ) {	
+		SvREFCNT_dec(self->entities[i]->ref);
 	}
-	Safefree(self->entities);
-	Safefree(self);
+	Safefree(self->entities);	
 }

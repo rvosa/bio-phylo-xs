@@ -10,6 +10,7 @@ typedef struct {
     int _container; // from defines
     size_t _size; // set by child class
     SV* sv; // reference to perl struct
+    SV* ref;
 } Identifiable;
 
 void initialize_identifiable(Identifiable* self);

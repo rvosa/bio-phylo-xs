@@ -6,7 +6,7 @@ Identifiable * BIO_PHYLO_OBJECT
 #----------------------------------------------------------------------------------------#
 INPUT
 BIO_PHYLO_OBJECT
-	$var = INT2PTR( $type, SvIV(SvRV($arg)) );
+	$var = ($type)SvIV(SvRV($arg));
 #----------------------------------------------------------------------------------------#
 OUTPUT
 BIO_PHYLO_OBJECT

@@ -3,11 +3,28 @@
 # include "src/Listable.h"
 # include "src/Node.h"
 
+/*
+// this is the reference (perlref)
+SV = RV(0x10082e008) at 0x10082dff8
+  REFCNT = 1
+  FLAGS = (PADMY,ROK)
+  RV = 0x100804ed0
+  
+  // this is the blessed object (obj_ref)
+  SV = PVMG(0x1009e5cc0) at 0x100804ed0
+    REFCNT = 1
+    FLAGS = (OBJECT,IOK,READONLY,pIOK)
+    IV = 4313962048
+    NV = 0
+    PV = 0
+    STASH = 0x10085af88 "Bio::PhyloXS::Forest::Node"
+*/
+
 Node* create(const char * classname) {
     Node *self;
 
     /* allocate and initialize struct */
-    New(0, self, 1, Node);
+    Newx(self, 1, Node);
     initialize_node(self);
 
     /* create perl object and ref; store pointer to object in struct */
@@ -16,8 +33,7 @@ Node* create(const char * classname) {
     sv_bless(obj_ref, gv_stashpv(classname, TRUE));
     SvREADONLY_on(perlref);
     ((Identifiable*)self)->sv = obj_ref;
-    SvREFCNT_inc(obj_ref);
-
+	((Identifiable*)self)->ref = perlref;
     return self;
 }
 

@@ -25,7 +25,15 @@ SV* sv(Identifiable* self) {
 	return self->sv;
 }
 
+SV* ref(Identifiable* self) {
+	return self->ref;
+}
+
+int refcnt (Identifiable* self) {
+	return SvREFCNT(self->sv);
+}
+
 void destroy_identifiable(Identifiable* self) {
-	Safefree(self->sv);
-	Safefree(self);
+	// as of now, there is actually nothing to clean up here:
+	// the SV* member is cleaned up by perl (I hope)
 }

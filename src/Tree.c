@@ -8,7 +8,7 @@ Tree* create(const char * classname) {
     Tree *self;
 
     /* allocate and initialize struct */
-    New(0, self, 1, Tree);
+    Newx(self, 1, Tree);
     initialize_tree(self);
 
     /* create perl object and ref; store pointer to object in struct */
@@ -17,7 +17,6 @@ Tree* create(const char * classname) {
     sv_bless(obj_ref, gv_stashpv(classname, TRUE));
     SvREADONLY_on(perlref);
     ((Identifiable*)self)->sv = obj_ref;
-    SvREFCNT_inc(obj_ref);
 
     return self;	
 }
@@ -52,13 +51,9 @@ int is_default(Tree* self) {
 
 Node* get_root(Tree* self) {
 	Listable* list = (Listable*)self;
-	warn("getting root");
 	int i;
-	printf("nodes: %d\n",list->used);
 	for ( i = 0; i < list->used; i++ ) {
-		warn("casting node\n");
 		Node* node = (Node*)list->entities[i];
-		printf("checking node %d\n",i);
 		if ( node->parent == NULL ) {			
 			SvREFCNT_inc(((Identifiable*)node)->sv);
 			return node;
