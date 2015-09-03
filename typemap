@@ -1,6 +1,8 @@
 TYPEMAP
 Node *         BIO_PHYLO_OBJECT
 Tree *         BIO_PHYLO_OBJECT
+Listable *     BIO_PHYLO_OBJECT
+Identifiable * BIO_PHYLO_OBJECT
 #----------------------------------------------------------------------------------------#
 INPUT
 BIO_PHYLO_OBJECT
