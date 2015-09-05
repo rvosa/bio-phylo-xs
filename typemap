@@ -1,14 +1,16 @@
 TYPEMAP
-Node *         BIO_PHYLO_OBJECT
-Tree *         BIO_PHYLO_OBJECT
-Listable *     BIO_PHYLO_OBJECT
-Identifiable * BIO_PHYLO_OBJECT
-#----------------------------------------------------------------------------------------#
-INPUT
-BIO_PHYLO_OBJECT
-	$var = ($type)SvIV(SvRV($arg));
-#----------------------------------------------------------------------------------------#
-OUTPUT
-BIO_PHYLO_OBJECT
-	$arg = ((Identifiable*)$var)->sv;
+const char *    T_PV
+Node *          O_OBJECT
+Listable *      O_OBJECT
+Identifiable *  O_OBJECT
+U64             T_UV
+U8              T_UV
+U8 *            T_PV
 
+INPUT
+O_OBJECT
+    $var = ($type)SvIV(SvRV($arg));
+
+OUTPUT
+O_OBJECT
+	sv_setref_pv( $arg, ((Identifiable*)$var)->_class, (void*)$var );
