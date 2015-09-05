@@ -1,16 +1,12 @@
 #ifndef LISTABLE_H
 #define LISTABLE_H
 
-#define LISTABLE_INITIAL_SIZE 10
-
 # include "src/Identifiable.h"
 
 typedef struct {
 	Identifiable identifiable;
-    Identifiable **entities;
+    AV* entities;
     int index;
-    size_t used;
-    size_t size;
 } Listable;
 
 void initialize_listable(Listable* self);
