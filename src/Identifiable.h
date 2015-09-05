@@ -8,9 +8,7 @@ typedef struct {
     int id; // from idpool
     int _type; // from defines
     int _container; // from defines
-    size_t _size; // set by child class
-    SV* sv; // reference to perl struct
-    SV* ref;
+	char* _class; // from constructor
 } Identifiable;
 
 void initialize_identifiable(Identifiable* self);

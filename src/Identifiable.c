@@ -17,23 +17,10 @@ int _container(Identifiable* self){
 	return self->_container;
 }
 
-size_t _size(Identifiable* self){
-	return self->_size;
-}
-
-SV* sv(Identifiable* self) {
-	return self->sv;
-}
-
-SV* ref(Identifiable* self) {
-	return self->ref;
-}
-
-int refcnt (Identifiable* self) {
-	return SvREFCNT(self->sv);
+char* _class(Identifiable* self) {
+	return self->_class;
 }
 
 void destroy_identifiable(Identifiable* self) {
-	// as of now, there is actually nothing to clean up here:
-	// the SV* member is cleaned up by perl (I hope)
+	//Safefree(self->_class);
 }
