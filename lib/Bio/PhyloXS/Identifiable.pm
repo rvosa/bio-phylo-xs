@@ -16,7 +16,6 @@ sub new {
 
 sub DESTROY {
 	my $self = shift;
-	print "destroying $self ", $self->get_id, "\n";
 	my $class = ref $self;
 	$class =~ s/.+://;
 	my $destructor = 'destroy_' . lc $class;
