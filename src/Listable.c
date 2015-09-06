@@ -43,9 +43,11 @@ void insert(Listable* self, Identifiable* element) {
 }
 
 void insert_at_index(Listable* self, Identifiable* element, int index) {		
-	if ( can_contain(self,element) ) {		
-		//self->entities[index] = element;
-		//SvREFCNT_inc(element->ref);
+	if ( can_contain(self,element) ) {	
+		SV* sv = newSV(0);	
+		sv_setref_pv( sv, element->_class, (void*)element );
+		SvREFCNT_inc(sv);
+		av_store(self->entities, index, sv);
 	}
 	else {
 		croak("Object mismatch!");
