@@ -3,7 +3,7 @@
 # include "src/Listable.h"
 # include "src/Node.h"
 
-Node *new(const char *classname) {
+Node *create(const char *classname) {
     Node *self;
     Newx(self,1,Node);
     ((Identifiable*)self)->_class = savepv(classname);
@@ -57,7 +57,7 @@ AV* get_children( Node* self ) {
 
 void destroy_node(Node* self) {
 	destroy_listable((Listable*)self);
-	if ( self->rank != NULL ) {
-		Safefree(self->rank);
-	}
+	//if ( self->rank != NULL ) {
+	//	Safefree(self->rank);
+	//}
 }
