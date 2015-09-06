@@ -6,19 +6,10 @@
 
 Tree* create(const char * classname) {
     Tree *self;
-
-    /* allocate and initialize struct */
-    Newx(self, 1, Tree);
+    Newx(self,1,Tree);
+    ((Identifiable*)self)->_class = savepv(classname);
     initialize_tree(self);
-
-    /* create perl object and ref; store pointer to object in struct */
-    SV* perlref = newSViv((IV)self);
-    SV* obj_ref = newRV_noinc(perlref);
-    sv_bless(obj_ref, gv_stashpv(classname, TRUE));
-    SvREADONLY_on(perlref);
-    ((Identifiable*)self)->sv = obj_ref;
-
-    return self;	
+    return self;
 }
 
 void initialize_tree(Tree* self){
@@ -27,7 +18,6 @@ void initialize_tree(Tree* self){
 	self->is_default = 0;
 	((Identifiable*)self)->_type = _TREE_;
 	((Identifiable*)self)->_container = _FOREST_;
-	((Identifiable*)self)->_size = sizeof(Tree);	
 }
 
 Tree* set_as_unrooted(Tree* self){
@@ -51,12 +41,15 @@ int is_default(Tree* self) {
 
 Node* get_root(Tree* self) {
 	Listable* list = (Listable*)self;
+	SSize_t max = av_len(list->entities);
 	int i;
-	for ( i = 0; i < list->used; i++ ) {
-		Node* node = (Node*)list->entities[i];
-		if ( node->parent == NULL ) {			
-			SvREFCNT_inc(((Identifiable*)node)->sv);
-			return node;
+	for ( i = 0; i <= max; i++ ) {
+		if ( av_exists(list->entities,i) ) {
+			SV* sv = *(av_fetch(list->entities, i, 0));
+			Node* node = (Node*)SvIV(SvRV(sv));
+			if ( node->parent == NULL ) {
+				return node;
+			}
 		}
 	}
 	return NULL;
@@ -64,5 +57,5 @@ Node* get_root(Tree* self) {
 
 void destroy_tree(Tree* self) {
 	destroy_listable((Listable*)self);
-	Safefree(self);
+	//Safefree(self);
 }
