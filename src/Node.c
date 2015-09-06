@@ -55,6 +55,25 @@ AV* get_children( Node* self ) {
 	return ((Listable*)self)->entities;
 }
 
+int is_child_of( Node* self, Node* parent ) {
+	if ( self->parent != NULL ) {
+		return ((Identifiable*)self->parent)->id == ((Identifiable*)parent)->id;
+	}
+	return 0;
+}
+
+int is_ancestor_of( Node* self, Node* desc ) {
+	Node* p = desc->parent;
+	int sid = ((Identifiable*)self)->id;
+	while( p != NULL ) {
+		if ( ((Identifiable*)p)->id == sid ) {
+			return 1;
+		}
+		p = p->parent;
+	}
+	return 0;
+}
+
 void destroy_node(Node* self) {
 	destroy_listable((Listable*)self);
 	//if ( self->rank != NULL ) {
