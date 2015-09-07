@@ -25,16 +25,27 @@ double get_branch_length(Node* self) {
 	return self->branch_length;
 }
 
-void set_branch_length(Node* self, double length) {
+Node* set_branch_length(Node* self, double length) {
 	self->branch_length = length;
+	return self;
+}
+
+Node* set_tree(Node* self, Tree* tree) {
+	self->tree = tree;
+	return self;
+}
+
+Tree* get_tree(Node* self) {
+	return self->tree;
 }
 
 char* get_rank(Node* self) {
 	return self->rank;
 }
 
-void set_rank(Node* self, char * rank) {
+Node* set_rank(Node* self, char * rank) {
 	self->rank = savepv(rank);
+	return self;
 }
 
 Node* set_raw_parent( Node* self, Node* parent ) {
