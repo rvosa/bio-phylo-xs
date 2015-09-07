@@ -5,11 +5,11 @@
 # include "src/Tree.h"
 
 Tree* create(const char * classname) {
-    Tree *self;
-    Newx(self,1,Tree);
-    ((Identifiable*)self)->_class = savepv(classname);
-    initialize_tree(self);
-    return self;
+	Tree *self;
+	Newx(self,1,Tree);
+	((Identifiable*)self)->_class = savepv(classname);
+	initialize_tree(self);
+	return self;
 }
 
 void initialize_tree(Tree* self){
@@ -57,5 +57,4 @@ Node* get_root(Tree* self) {
 
 void destroy_tree(Tree* self) {
 	destroy_listable((Listable*)self);
-	//Safefree(self);
 }
