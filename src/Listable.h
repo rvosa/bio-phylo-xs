@@ -2,9 +2,10 @@
 #define LISTABLE_H
 
 # include "src/Identifiable.h"
+# include "src/Writable.h"
 
 typedef struct {
-	Identifiable identifiable;
+	Writable writable;
     AV* entities;
     int index;
 } Listable;

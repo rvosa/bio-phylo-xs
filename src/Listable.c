@@ -1,9 +1,10 @@
 # include "src/types.h"
 # include "src/Identifiable.h"
 # include "src/Listable.h"
+# include "src/Writable.h"
 
 void initialize_listable(Listable* self){
-	initialize_identifiable((Identifiable*)self);
+	initialize_writable((Writable*)self);
 	self->index = 0;
 	self->entities = newAV();
 }
