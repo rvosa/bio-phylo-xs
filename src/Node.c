@@ -1,5 +1,6 @@
 # include "src/types.h"
 # include "src/Identifiable.h"
+# include "src/Writable.h"
 # include "src/Listable.h"
 # include "src/Node.h"
 
@@ -7,6 +8,7 @@ Node *create(const char *classname) {
 	Node *self;
 	Newx(self,1,Node);
 	((Identifiable*)self)->_class = savepv(classname);
+	((Writable*)self)->tag = savepv("node");	
 	initialize_node(self);
 	return self;
 }

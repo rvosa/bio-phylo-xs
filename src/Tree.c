@@ -1,6 +1,7 @@
 # include "src/types.h"
 # include "src/Identifiable.h"
 # include "src/Listable.h"
+# include "src/Writable.h"
 # include "src/Node.h"
 # include "src/Tree.h"
 
@@ -8,6 +9,7 @@ Tree* create(const char * classname) {
 	Tree *self;
 	Newx(self,1,Tree);
 	((Identifiable*)self)->_class = savepv(classname);
+	((Writable*)self)->tag = savepv("tree");
 	initialize_tree(self);
 	return self;
 }
