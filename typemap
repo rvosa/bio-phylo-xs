@@ -10,8 +10,18 @@ U8 *            T_PV
 
 INPUT
 O_OBJECT
-    $var = ($type)SvIV(SvRV($arg));
+	if ( SvTRUE($arg) ) {
+    	$var = ($type)SvIV(SvRV($arg));		
+	}
+	else {
+    	$var = NULL;
+    }
 
 OUTPUT
 O_OBJECT
-	sv_setref_pv( $arg, ((Identifiable*)$var)->_class, (void*)$var );
+	if ( $var == NULL ) {
+		$arg = NULL;
+	}
+	else {
+		sv_setref_pv( $arg, ((Identifiable*)$var)->_class, (void*)$var );
+	}
