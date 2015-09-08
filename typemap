@@ -5,6 +5,12 @@ Tree *          O_OBJECT
 Listable *      O_OBJECT
 Writable *      O_OBJECT
 Identifiable *  O_OBJECT
+Character *     O_OBJECT
+Characters *    O_OBJECT
+Datatype *      O_OBJECT
+Datum *         O_OBJECT
+Matrix *        O_OBJECT
+TypeSafeData *  O_OBJECT
 U64             T_UV
 U8              T_UV
 U8 *            T_PV
@@ -12,11 +18,11 @@ U8 *            T_PV
 INPUT
 O_OBJECT
 	if ( SvTRUE($arg) ) {
-    	$var = ($type)SvIV(SvRV($arg));		
+		$var = ($type)SvIV(SvRV($arg));
 	}
 	else {
-    	$var = NULL;
-    }
+		$var = NULL;
+	}
 
 OUTPUT
 O_OBJECT
