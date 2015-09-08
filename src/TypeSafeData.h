@@ -7,8 +7,6 @@
 typedef struct {
 	Listable * listable;
 	Datatype * datatype;
-	char missing;
-	char gap;
 	AV* meta;
 } TypeSafeData;
 
