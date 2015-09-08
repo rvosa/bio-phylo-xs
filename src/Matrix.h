@@ -15,6 +15,6 @@ typedef struct {
 	Characters * characters;
 } Matrix;
 
-initialize_matrix(Matrix* self);
+void initialize_matrix(Matrix* self);
 
 #endif

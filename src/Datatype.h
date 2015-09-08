@@ -10,6 +10,6 @@ typedef struct {
 	AV* meta;
 } Datatype;
 
-initialize_datatype(Datatype* self);
+void initialize_datatype(Datatype* self);
 
 #endif

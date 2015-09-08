@@ -7,6 +7,6 @@ typedef struct {
 	TypeSafeData * type;
 } Character;
 
-initialize_character(Character* self);
+void initialize_character(Character* self);
 
 #endif

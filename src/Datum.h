@@ -10,6 +10,6 @@ typedef struct {
 	AV* annotations;
 } Datum;
 
-initialize_datum(Datum* self);
+void initialize_datum(Datum* self);
 
 #endif

@@ -10,6 +10,6 @@ typedef struct {
 	AV* meta;
 } TypeSafeData;
 
-initialize_typesafedata(TypeSafeData* self);
+void initialize_typesafedata(TypeSafeData* self);
 
 #endif
