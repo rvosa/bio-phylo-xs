@@ -22,6 +22,58 @@ void initialize_writable(Writable* self){
 	self->is_suppress_ns = 0;
 }
 
+Writable* set_attributes(Writable* self, ...) {
+	Inline_Stack_Vars;	// handle variable argument list
+	
+	// get either a hash ref or key/value pairs
+	HV* newValues;
+	if ( Inline_Stack_Items == 2 ) {
+		newValues = (HV*)SvRV(Inline_Stack_Item(1));
+	}
+	else {
+		newValues = newHV();
+		int i;
+		for ( i = 1; i < Inline_Stack_Items - 1; i += 2 ) {
+			SV* key = Inline_Stack_Item(i);
+			SV* value = Inline_Stack_Item(i+1);
+			char* keystr = SvPV_nolen(key);
+			hv_store(newValues, keystr, strlen(keystr), value, 0);
+		}
+	}
+	
+	// iterate over keys
+	I32 keys = hv_iterinit(newValues);
+	I32 i;
+	for ( i = 0; i < keys; i++ ) {
+		char * key = NULL;
+		I32 key_length = 0;
+		SV* value = hv_iternextsv(newValues, &key, &key_length);		
+		
+		// verify namespace prefixes
+		char * pch = strchr( key, ':' );
+		if ( pch != NULL ) {
+			int pos = pch - key;
+			char * prefix = (char*) malloc(pos);
+			strncpy( prefix, key, pos );			
+			char * msg = "Unbound attribute prefix '%s'\n";
+			
+			// should use logger, and should be conditional on:
+			// 1. it not being 'xmlns',
+			// 2. it not being known in global set of namespaces			
+			printf(msg,prefix);
+		}
+		
+		// store value
+		hv_store(self->attributes, key, strlen(key), value, 0);
+	}
+
+	return self;
+}
+
+HV* get_attributes(Writable* self) {
+	return self->attributes;
+}
+
 Writable* set_link(Writable* self, char* url) {
 	self->url = savepv(url);
 	return self;
@@ -89,4 +141,18 @@ char * get_tag(Writable* self) {
 
 char * get_xml_id(Writable* self) {
 	return self->xml_id;
+}
+
+Writable* set_xml_id(Writable* self, char * id) {
+	int len = strlen(id) + 1;
+	char about[len];
+	sprintf(about, "#%s", id);
+	hv_store(self->attributes, "id", 2, newSVpv(id,0), 0);	
+	hv_store(self->attributes, "about", 5, newSVpv(about,0), 0);		
+	return self;
+}
+
+Writable* set_base_uri(Writable* self, char * uri) {
+	hv_store(self->attributes, "xml:base", 8, newSVpv(uri,0), 0);	
+	return self;
 }
