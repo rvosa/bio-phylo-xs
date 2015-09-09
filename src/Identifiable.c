@@ -22,5 +22,6 @@ char* _class(Identifiable* self) {
 }
 
 void destroy_identifiable(Identifiable* self) {
-	//Safefree(self->_class);
+	Safefree(self->_class);
+	Safefree(self);
 }

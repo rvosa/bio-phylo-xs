@@ -7,7 +7,6 @@ typedef struct {
 	Writable * writable;
 	char missing;
 	char gap;
-	AV* meta;
 } Datatype;
 
 void initialize_datatype(Datatype* self);

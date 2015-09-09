@@ -158,5 +158,12 @@ Writable* set_base_uri(Writable* self, char * uri) {
 }
 
 void destroy_writable(Writable* self) {
-	destroy_identifiable((Identifiable*)self);
+	destroy_identifiable((Identifiable*)self);	
+	Safefree(self->attributes);
+	Safefree(self->meta);
+	Safefree(self->tag);
+	Safefree(self->xml_id);
+	if ( self->url != NULL ) {
+		Safefree(self->url);	
+	}
 }

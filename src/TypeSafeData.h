@@ -7,7 +7,6 @@
 typedef struct {
 	Listable * listable;
 	Datatype * datatype;
-	AV* meta;
 } TypeSafeData;
 
 void initialize_typesafedata(TypeSafeData* self);

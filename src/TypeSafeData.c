@@ -14,22 +14,27 @@ TypeSafeData* create(const char * classname) {
 
 void initialize_typesafedata(TypeSafeData* self){
 	initialize_listable((Listable*)self);
-	self->meta = newAV();
 	
 	// maybe something HAS to go here?
 	((Identifiable*)self)->_container = _NONE_;
 	((Identifiable*)self)->_type = _NONE_;	
 
 	// create datatype object
-	Datatype* datatype;
-	Newx(datatype,1,Datatype);
-	((Identifiable*)datatype)->_class = savepv("Bio::PhyloXS::Matrices::Datatype");
-	((Writable*)datatype)->tag = savepv("states");	
-	initialize_datatype(datatype);
-	self->datatype = datatype;
+	Newx(self->datatype,1,Datatype);
+	((Identifiable*)self->datatype)->_class = savepv("Bio::PhyloXS::Matrices::Datatype");
+	((Writable*)self->datatype)->tag = savepv("states");	
+	initialize_datatype(self->datatype);
+}
+
+Datatype* get_type_object(TypeSafeData* self) {
+	return self->datatype;
+}
+
+TypeSafeData* set_type_object(TypeSafeData* self, Datatype* type) {
+	self->datatype = type;
+	return self;
 }
 
 void destroy_typesafedata(TypeSafeData* self) {
-	//destroy_datatype(self->datatype);
-	destroy_listable((Listable*)self);
+	destroy_listable((Listable*)self);	
 }
