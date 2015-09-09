@@ -1,5 +1,6 @@
 # include "src/Characters.h"
 # include "src/TypeSafeData.h"
+# include "src/types.h"
 
 Characters* create(const char * classname) {
 	Characters *self;

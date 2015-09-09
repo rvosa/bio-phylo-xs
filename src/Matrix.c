@@ -1,6 +1,7 @@
 # include "src/Matrix.h"
 # include "src/TypeSafeData.h"
 # include "src/Characters.h"
+# include "src/types.h"
 
 Matrix* create(const char * classname) {
 	Matrix *self;
@@ -16,7 +17,7 @@ void initialize_matrix(Matrix* self){
 	self->charlabels = newAV();
 	self->statelabels = newAV();
 	self->gapmode = 1;
-	self-matchchar = '.';
+	self->matchchar = '.';
 	self->polymorphism = 0;
 	self->respectcase = 1;
 	((Identifiable*)self)->_type = _MATRIX_;
@@ -25,8 +26,8 @@ void initialize_matrix(Matrix* self){
 	// create Characters *
 	Characters *chars;
 	Newx(chars,1,Characters);
-	((Identifiable*)chars)->_class = savepv(classname);
-	((Writable*)chars)->tag = savepv("Bio::Phylo::Matrices::Characters");		
+	((Identifiable*)chars)->_class = savepv("Bio::Phylo::Matrices::Characters");
+	((Writable*)chars)->tag = savepv("chars");		
 	initialize_characters(chars);
 	self->characters = chars;
 }

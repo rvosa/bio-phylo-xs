@@ -1,5 +1,6 @@
 # include "src/Datatype.h"
 # include "src/Writable.h"
+# include "src/types.h"
 
 Datatype* create(const char * classname) {
 	Datatype *self;

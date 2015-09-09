@@ -6,6 +6,7 @@ TypeSafeData* create(const char * classname) {
 	TypeSafeData *self;
 	Newx(self,1,TypeSafeData);
 	((Identifiable*)self)->_class = savepv(classname);
+	((Writable*)self)->tag = savepv("tsd");	
 	initialize_typesafedata(self);
 	return self;
 }
@@ -18,6 +19,7 @@ void initialize_typesafedata(TypeSafeData* self){
 	Datatype* datatype;
 	Newx(datatype,1,Datatype);
 	((Identifiable*)datatype)->_class = savepv("Bio::PhyloXS::Matrices::Datatype");
+	((Writable*)datatype)->tag = savepv("states");	
 	initialize_datatype(datatype);
 	self->datatype = datatype;
 }

@@ -1,5 +1,6 @@
 # include "src/Datum.h"
 # include "src/TypeSafeData.h"
+# include "src/types.h"
 
 Datum* create(const char * classname) {
 	Datum *self;
@@ -16,5 +17,5 @@ void initialize_datum(Datum* self){
 	self->weight = 1.0;
 	self->annotations = newAV();
 	((Identifiable*)self)->_type = _DATUM_;
-	((Identifiable*)self)->_container = _MATRIX_;	
+	((Identifiable*)self)->_container = _MATRIX_;
 }
