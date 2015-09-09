@@ -11,5 +11,6 @@ typedef struct {
 } TypeSafeData;
 
 void initialize_typesafedata(TypeSafeData* self);
+void destroy_typesafedata(TypeSafeData* self);
 
 #endif

@@ -11,5 +11,6 @@ typedef struct {
 } Datatype;
 
 void initialize_datatype(Datatype* self);
+void destroy_datatype(Datatype* self);
 
 #endif

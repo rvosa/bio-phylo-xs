@@ -15,5 +15,6 @@ typedef struct {
 } Writable;
 
 void initialize_writable(Writable* self);
+void destroy_writable(Writable* self);
 
 #endif

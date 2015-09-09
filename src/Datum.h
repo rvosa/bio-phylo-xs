@@ -11,5 +11,6 @@ typedef struct {
 } Datum;
 
 void initialize_datum(Datum* self);
+void destroy_datum(Datum* self);
 
 #endif

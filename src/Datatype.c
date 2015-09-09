@@ -5,9 +5,9 @@
 Datatype* create(const char * classname) {
 	Datatype *self;
 	Newx(self,1,Datatype);
-	((Identifiable*)self)->_class = savepv(classname);
 	((Writable*)self)->tag = savepv("states");
 	initialize_datatype(self);
+	((Identifiable*)self)->_class = savepv(classname);	
 	return self;
 }
 
@@ -17,4 +17,9 @@ void initialize_datatype(Datatype* self){
 	self->gap = '-';
 	self->meta = newAV();
 	((Identifiable*)self)->_type = _DATATYPE_;
+	((Identifiable*)self)->_container = _NONE_;		
+}
+
+void destroy_datatype(Datatype* self) {
+	destroy_writable((Writable*)self);
 }

@@ -6,9 +6,9 @@
 Matrix* create(const char * classname) {
 	Matrix *self;
 	Newx(self,1,Matrix);
-	((Identifiable*)self)->_class = savepv(classname);
 	((Writable*)self)->tag = savepv("characters");
 	initialize_matrix(self);
+	((Identifiable*)self)->_class = savepv(classname);	
 	return self;
 }
 
@@ -30,4 +30,9 @@ void initialize_matrix(Matrix* self){
 	((Writable*)chars)->tag = savepv("chars");		
 	initialize_characters(chars);
 	self->characters = chars;
+}
+
+void destroy_matrix(Matrix* self) {
+	destroy_characters(self->characters);
+	destroy_typesafedata((TypeSafeData*)self);
 }

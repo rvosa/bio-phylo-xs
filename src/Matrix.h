@@ -16,5 +16,6 @@ typedef struct {
 } Matrix;
 
 void initialize_matrix(Matrix* self);
+void destroy_matrix(Matrix* self);
 
 #endif

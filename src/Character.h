@@ -8,5 +8,6 @@ typedef struct {
 } Character;
 
 void initialize_character(Character* self);
+void destroy_character(Character* self);
 
 #endif

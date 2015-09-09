@@ -156,3 +156,7 @@ Writable* set_base_uri(Writable* self, char * uri) {
 	hv_store(self->attributes, "xml:base", 8, newSVpv(uri,0), 0);	
 	return self;
 }
+
+void destroy_writable(Writable* self) {
+	destroy_identifiable((Identifiable*)self);
+}

@@ -5,9 +5,9 @@
 Datum* create(const char * classname) {
 	Datum *self;
 	Newx(self,1,Datum);
-	((Identifiable*)self)->_class = savepv(classname);
 	((Writable*)self)->tag = savepv("row");
 	initialize_datum(self);
+	((Identifiable*)self)->_class = savepv(classname);	
 	return self;
 }
 
@@ -18,4 +18,8 @@ void initialize_datum(Datum* self){
 	self->annotations = newAV();
 	((Identifiable*)self)->_type = _DATUM_;
 	((Identifiable*)self)->_container = _MATRIX_;
+}
+
+void destroy_datum(Datum* self) {
+	destroy_typesafedata((TypeSafeData*)self);
 }
