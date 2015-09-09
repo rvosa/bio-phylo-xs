@@ -26,7 +26,7 @@ void initialize_matrix(Matrix* self){
 	// create Characters *
 	Characters *chars;
 	Newx(chars,1,Characters);
-	((Identifiable*)chars)->_class = savepv("Bio::Phylo::Matrices::Characters");
+	((Identifiable*)chars)->_class = savepv("Bio::PhyloXS::Matrices::Characters");
 	((Writable*)chars)->tag = savepv("chars");		
 	initialize_characters(chars);
 	self->characters = chars;
