@@ -8,8 +8,6 @@
 Tree* create(const char * classname) {
 	Tree *self;
 	Newx(self,1,Tree);
-	((Identifiable*)self)->_class = savepv(classname);
-	((Writable*)self)->tag = savepv("tree");
 	initialize_tree(self);
 	return self;
 }
@@ -20,6 +18,7 @@ void initialize_tree(Tree* self){
 	self->is_default = 0;
 	((Identifiable*)self)->_type = _TREE_;
 	((Identifiable*)self)->_container = _FOREST_;
+	((Identifiable*)self)->_index = _TREE_IDX_;	
 }
 
 Tree* set_as_unrooted(Tree* self){

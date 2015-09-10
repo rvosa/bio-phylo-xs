@@ -7,8 +7,6 @@
 Node *create(const char *classname) {
 	Node *self;
 	Newx(self,1,Node);
-	((Identifiable*)self)->_class = savepv(classname);
-	((Writable*)self)->tag = savepv("node");	
 	initialize_node(self);
 	return self;
 }
@@ -21,6 +19,7 @@ void initialize_node(Node* self) {
 	self->branch_length = 0.0;
 	((Identifiable*)self)->_type = _NODE_;
 	((Identifiable*)self)->_container = _TREE_;
+	((Identifiable*)self)->_index = _NODE_IDX_;	
 }
 
 double get_branch_length(Node* self) {

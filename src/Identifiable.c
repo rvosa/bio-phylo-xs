@@ -17,11 +17,10 @@ int _container(Identifiable* self){
 	return self->_container;
 }
 
-char* _class(Identifiable* self) {
-	return self->_class;
+int _index(Identifiable* self) {
+	return self->_index;
 }
 
 void destroy_identifiable(Identifiable* self) {
-	Safefree(self->_class);
 	Safefree(self);
 }

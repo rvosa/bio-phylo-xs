@@ -34,7 +34,8 @@ int can_contain(Listable* self, Identifiable* element) {
 void insert(Listable* self, Identifiable* element) {
 	if ( can_contain(self,element) ) {
 		SV* sv = newSV(0);
-		sv_setref_pv( sv, element->_class, (void*)element );
+		int idx = element->_index;
+		sv_setref_pv( sv, package[idx], (void*)element );
 		SvREFCNT_inc(sv);
 		av_push(self->entities, sv);		
 	}
@@ -46,7 +47,8 @@ void insert(Listable* self, Identifiable* element) {
 void insert_at_index(Listable* self, Identifiable* element, int index) {		
 	if ( can_contain(self,element) ) {	
 		SV* sv = newSV(0);	
-		sv_setref_pv( sv, element->_class, (void*)element );
+		int idx = element->_index;		
+		sv_setref_pv( sv, package[idx], (void*)element );
 		SvREFCNT_inc(sv);
 		av_store(self->entities, index, sv);
 	}

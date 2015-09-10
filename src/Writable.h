@@ -3,12 +3,26 @@
 
 # include "src/Identifiable.h"
 
+static const char *tag[] = {
+	"node",
+	"tree",
+	"trees",
+	"otu",
+	"otus",
+	"row",
+	"characters",
+	"char",
+	"chars",
+	"meta",
+	"nex:nexml",
+	"set",
+	"states"
+};
+
 typedef struct {
 	Identifiable identifiable;
 	HV* attributes;
 	AV* meta;
-	char * tag;
-	char * xml_id;
 	char * url;
 	int is_identifiable;
 	int is_suppress_ns;

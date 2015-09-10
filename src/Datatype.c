@@ -4,11 +4,8 @@
 
 Datatype* create(const char * classname) {
 	Datatype *self;
-	Newx(self,1,Datatype);
-	((Writable*)self)->tag = savepv("states");	
+	Newx(self,1,Datatype);	
 	initialize_datatype(self);
-	((Writable*)self)->tag = savepv("states");	
-	((Identifiable*)self)->_class = savepv(classname);
 	return self;
 }
 
@@ -18,6 +15,7 @@ void initialize_datatype(Datatype* self){
 	self->gap = '-';
 	((Identifiable*)self)->_type = _DATATYPE_;
 	((Identifiable*)self)->_container = _NONE_;
+	((Identifiable*)self)->_index = _DATATYPE_IDX_;	
 }
 
 char get_missing(Datatype* self) {

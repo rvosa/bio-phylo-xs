@@ -33,6 +33,21 @@
 #define _OPERATION_ 28
 #define _DATATYPE_ 29
 
+// tag/package indices
+#define _NODE_IDX_ 0
+#define _TREE_IDX_ 1
+#define _FOREST_IDX_ 2
+#define _TAXON_IDX_ 3
+#define _TAXA_IDX_ 4
+#define _DATUM_IDX_ 5
+#define _MATRIX_IDX_ 6
+#define _CHARACTER_IDX_ 7
+#define _CHARACTERS_IDX_ 8
+#define _META_IDX_ 9
+#define _PROJECT_IDX_ 10
+#define _SET_IDX_ 11
+#define _DATATYPE_IDX_ 12
+
 /*
 Allocate memory with Newx if it's
 available - if it's an older perl

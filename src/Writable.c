@@ -3,18 +3,6 @@
 
 void initialize_writable(Writable* self){
 	initialize_identifiable((Identifiable*)self);
-	
-	// compose XML id
-	char * tag = self->tag;
-	int i = 0;
-	while( tag[i] != '\0' ) {
-		i++;
-	}
-	char xml_id[10];
-	sprintf(xml_id,"%c%c%i",tag[0],tag[i-1],((Identifiable*)self)->id);
-	self->xml_id = savepv(xml_id);
-	
-	// initialize other fields
 	self->attributes = newHV();
 	self->meta = newAV();
 	self->url = NULL;
@@ -130,26 +118,19 @@ int get_identifiable(Writable* self) {
 	return self->is_identifiable;
 }
 
-Writable* set_tag(Writable* self, char * tag ) {
-	self->tag = savepv(tag);
-	return self;
-}
-
 char * get_tag(Writable* self) {
-	return self->tag;
+	int idx = ((Identifiable*)self)->_index;
+	return tag[idx];
 }
 
 char * get_xml_id(Writable* self) {
-	return self->xml_id;
-}
-
-Writable* set_xml_id(Writable* self, char * id) {
-	int len = strlen(id) + 1;
-	char about[len];
-	sprintf(about, "#%s", id);
-	hv_store(self->attributes, "id", 2, newSVpv(id,0), 0);	
-	hv_store(self->attributes, "about", 5, newSVpv(about,0), 0);		
-	return self;
+	char xml_id[10];
+	int idx = ((Identifiable*)self)->_index;
+	int end_idx = strlen(tag[idx]) - 1;	
+	char start = tag[idx][0];
+	char end = tag[idx][end_idx];
+	sprintf(xml_id,"%c%c%d",start,end,((Identifiable*)self)->id);
+	return xml_id;
 }
 
 Writable* set_base_uri(Writable* self, char * uri) {
@@ -161,8 +142,6 @@ void destroy_writable(Writable* self) {
 	destroy_identifiable((Identifiable*)self);	
 	Safefree(self->attributes);
 	Safefree(self->meta);
-	Safefree(self->tag);
-	Safefree(self->xml_id);
 	if ( self->url != NULL ) {
 		Safefree(self->url);	
 	}

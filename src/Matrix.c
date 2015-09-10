@@ -6,9 +6,7 @@
 Matrix* create(const char * classname) {
 	Matrix *self;
 	Newx(self,1,Matrix);
-	((Writable*)self)->tag = savepv("characters");
 	initialize_matrix(self);
-	((Identifiable*)self)->_class = savepv(classname);	
 	return self;
 }
 
@@ -22,14 +20,11 @@ void initialize_matrix(Matrix* self){
 	self->respectcase = 1;
 	((Identifiable*)self)->_type = _MATRIX_;
 	((Identifiable*)self)->_container = _MATRICES_;	
+	((Identifiable*)self)->_container = _MATRIX_IDX_;		
 	
-	// create Characters *
-	Characters *chars;
-	Newx(chars,1,Characters);
-	((Identifiable*)chars)->_class = savepv("Bio::PhyloXS::Matrices::Characters");
-	((Writable*)chars)->tag = savepv("chars");		
-	initialize_characters(chars);
-	self->characters = chars;
+	// allocate and initialize Characters* field
+	Newx(self->characters,1,Characters);
+	initialize_characters(self->characters);
 }
 
 void destroy_matrix(Matrix* self) {

@@ -30,5 +30,6 @@ O_OBJECT
 		$arg = NULL;
 	}
 	else {
-		sv_setref_pv( $arg, ((Identifiable*)$var)->_class, (void*)$var );
+		int idx = ((Identifiable*)$var)->_index;
+		sv_setref_pv( $arg, package[idx], (void*)$var );
 	}
