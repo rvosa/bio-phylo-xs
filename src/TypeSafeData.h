@@ -5,7 +5,7 @@
 # include "src/Datatype.h"
 
 typedef struct {
-	Listable * listable;
+	Listable listable;
 	Datatype * datatype;
 } TypeSafeData;
 

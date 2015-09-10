@@ -4,7 +4,7 @@
 # include "src/Writable.h"
 
 typedef struct {
-	Writable * writable;
+	Writable writable;
 	char missing;
 	char gap;
 } Datatype;

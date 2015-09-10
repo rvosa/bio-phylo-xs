@@ -29,4 +29,5 @@ TypeSafeData* set_type_object(TypeSafeData* self, Datatype* type) {
 
 void destroy_typesafedata(TypeSafeData* self) {
 	destroy_listable((Listable*)self);	
+	Safefree(self->datatype);
 }

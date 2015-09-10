@@ -38,4 +38,5 @@ Datatype* set_gap(Datatype* self, char gap) {
 
 void destroy_datatype(Datatype* self) {
 	destroy_writable((Writable*)self);
+	//Safefree(self);
 }

@@ -22,5 +22,5 @@ int _index(Identifiable* self) {
 }
 
 void destroy_identifiable(Identifiable* self) {
-	Safefree(self);
+	//Safefree(self);
 }

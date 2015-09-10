@@ -5,7 +5,7 @@
 # include "src/Characters.h"
 
 typedef struct {
-	TypeSafeData * type;
+	TypeSafeData type;
 	AV* charlabels;
 	AV* statelabels;
 	int gapmode;

@@ -18,4 +18,5 @@ void initialize_characters(Characters* self){
 
 void destroy_characters(Characters* self) {
 	destroy_typesafedata((TypeSafeData*)self);
+	//Safefree(self);
 }
