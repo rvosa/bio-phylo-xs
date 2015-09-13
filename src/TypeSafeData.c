@@ -18,6 +18,15 @@ void initialize_typesafedata(TypeSafeData* self){
 	initialize_datatype(self->datatype);
 }
 
+TypeSafeData* set_type(TypeSafeData* self, char* type) {
+	_to_set_type(self->datatype,type);
+	return self;
+}
+
+char* get_type(TypeSafeData* self) {
+	return _to_get_type(self->datatype);
+}
+
 Datatype* get_type_object(TypeSafeData* self) {
 	return self->datatype;
 }

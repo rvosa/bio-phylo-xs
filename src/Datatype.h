@@ -11,11 +11,14 @@
 
 typedef struct {
 	Writable writable;
+	int datatype;
 	char missing;
 	char gap;
 } Datatype;
 
 void initialize_datatype(Datatype* self);
 void destroy_datatype(Datatype* self);
+void _to_set_type(Datatype* self, char* type);
+char* _to_get_type(Datatype* self);
 
 #endif
