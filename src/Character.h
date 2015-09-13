@@ -4,7 +4,7 @@
 # include "src/TypeSafeData.h"
 
 typedef struct {
-	TypeSafeData * type;
+	TypeSafeData type;
 } Character;
 
 void initialize_character(Character* self);

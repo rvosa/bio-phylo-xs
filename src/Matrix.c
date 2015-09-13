@@ -20,7 +20,7 @@ void initialize_matrix(Matrix* self){
 	self->respectcase = 1;
 	((Identifiable*)self)->_type = _MATRIX_;
 	((Identifiable*)self)->_container = _MATRICES_;	
-	((Identifiable*)self)->_container = _MATRIX_IDX_;		
+	((Identifiable*)self)->_index = _MATRIX_IDX_;		
 	
 	// allocate and initialize Characters* field
 	Newx(self->characters,1,Characters);
@@ -30,4 +30,5 @@ void initialize_matrix(Matrix* self){
 void destroy_matrix(Matrix* self) {
 	destroy_characters(self->characters);
 	destroy_typesafedata((TypeSafeData*)self);
+	//Safefree(self);
 }

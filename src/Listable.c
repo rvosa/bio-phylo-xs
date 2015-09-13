@@ -78,9 +78,6 @@ AV* get_entities(Listable* self) {
 }
 
 void destroy_listable(Listable* self) {
-	destroy_identifiable((Identifiable*)self);
-	//int i;
-	//for ( i = 0; i < self->used; i++ ) {	
-	//	SvREFCNT_dec(self->entities[i]->ref);
-	//}
+	destroy_writable((Identifiable*)self);
+	//SvREFCNT_dec( self->entities );
 }

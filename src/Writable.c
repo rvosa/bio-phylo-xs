@@ -139,9 +139,9 @@ Writable* set_base_uri(Writable* self, char * uri) {
 }
 
 void destroy_writable(Writable* self) {
-	destroy_identifiable((Identifiable*)self);	
-	Safefree(self->attributes);
-	Safefree(self->meta);
+	destroy_identifiable((Identifiable*)self);
+//	SvREFCNT_dec(self->attributes);
+//	SvREFCNT_dec(self->meta);
 	if ( self->url != NULL ) {
 		Safefree(self->url);	
 	}

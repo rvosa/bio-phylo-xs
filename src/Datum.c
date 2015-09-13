@@ -16,9 +16,10 @@ void initialize_datum(Datum* self){
 	self->annotations = newAV();
 	((Identifiable*)self)->_type = _DATUM_;
 	((Identifiable*)self)->_container = _MATRIX_;
-	((Identifiable*)self)->_idx = _DATUM_IDX_;	
+	((Identifiable*)self)->_index = _DATUM_IDX_;	
 }
 
 void destroy_datum(Datum* self) {
 	destroy_typesafedata((TypeSafeData*)self);
+	SvREFCNT_dec( self->annotations );
 }
