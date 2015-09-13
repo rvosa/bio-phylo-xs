@@ -29,51 +29,51 @@ char[16] IUPAC_RNA = {
 };
 
 //0000
-#define STATE_GAP 0
+#define RNA_STATE_GAP 0
 
 //0001
-#define STATE_A 1
+#define RNA_STATE_A 1
 
 //0010
-#define STATE_C 2
+#define RNA_STATE_C 2
 
 //0011
-#define STATE_M 3
+#define RNA_STATE_M 3
 
 //0100
-#define STATE_G 4
+#define RNA_STATE_G 4
 
 //0101
-#define STATE_R 5
+#define RNA_STATE_R 5
 
 //0110
-#define STATE_S 6
+#define RNA_STATE_S 6
 
 //0111
-#define STATE_V 7
+#define RNA_STATE_V 7
 
 //1000
-#define STATE_U 8
+#define RNA_STATE_U 8
 
 //1001
-#define STATE_W 9
+#define RNA_STATE_W 9
 
 //1010
-#define STATE_Y 10
+#define RNA_STATE_Y 10
 
 //1011
-#define STATE_H 11
+#define RNA_STATE_H 11
 
 //1100
-#define STATE_K 12
+#define RNA_STATE_K 12
 
 //1101
-#define STATE_D 13
+#define RNA_STATE_D 13
 
 //1110
-#define STATE_B 14
+#define RNA_STATE_B 14
 
 //1111
-#define STATE_N 15
+#define RNA_STATE_N 15
 
 #endif
