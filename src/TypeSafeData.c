@@ -23,6 +23,24 @@ TypeSafeData* set_type(TypeSafeData* self, char* type) {
 	return self;
 }
 
+char get_missing(TypeSafeData* self) {
+	return self->datatype->missing;
+}
+
+TypeSafeData* set_missing(TypeSafeData* self, char missing) {
+	self->datatype->missing = missing;
+	return self;
+}
+
+char get_gap(TypeSafeData* self) {
+	return self->datatype->gap;
+}
+
+TypeSafeData* set_gap(TypeSafeData* self, char gap) {
+	self->datatype->gap = gap;
+	return self;
+}
+
 char* get_type(TypeSafeData* self) {
 	return _to_get_type(self->datatype);
 }
