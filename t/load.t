@@ -8,8 +8,8 @@ use_ok('Bio::PhyloXS::Matrices::Datatype');
 use_ok('Bio::PhyloXS::NeXML::Writable');
 use_ok('Bio::PhyloXS');
 
-#use_ok('Bio::PhyloXS::Matrices::Character');
-#use_ok('Bio::PhyloXS::Matrices::Characters');
-#use_ok('Bio::PhyloXS::Matrices::Datum');
-#use_ok('Bio::PhyloXS::Matrices::Matrix');
-#use_ok('Bio::PhyloXS::Matrices::TypeSafeData');
+use_ok('Bio::PhyloXS::Matrices::Character');
+use_ok('Bio::PhyloXS::Matrices::Characters');
+use_ok('Bio::PhyloXS::Matrices::Datum');
+use_ok('Bio::PhyloXS::Matrices::Matrix');
+use_ok('Bio::PhyloXS::Matrices::TypeSafeData');
