@@ -1,4 +1,5 @@
 package Bio::PhyloXS;
+use Inline C => 'src/PhyloXS.c';
 BEGIN {
 	use Bio::Phylo::Factory;
 	my $fac = Bio::Phylo::Factory->new;
