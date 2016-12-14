@@ -11,6 +11,7 @@ Datatype *      O_OBJECT
 Datum *         O_OBJECT
 Matrix *        O_OBJECT
 TypeSafeData *  O_OBJECT
+TaxaMediator *  O_OBJECT
 U64             T_UV
 U8              T_UV
 U8 *            T_PV

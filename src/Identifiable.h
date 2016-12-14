@@ -20,6 +20,7 @@ static const char *package[] = {
 	"Bio::PhyloXS::Project",
 	"Bio::PhyloXS::Set",
 	"Bio::PhyloXS::Matrices::Datatype",
+	"Bio::PhyloXS::Mediators::TaxaMediator"
 };
 
 typedef struct {

@@ -47,6 +47,7 @@
 #define _PROJECT_IDX_ 10
 #define _SET_IDX_ 11
 #define _DATATYPE_IDX_ 12
+#define _TAXAMEDIATOR_IDX_ 13
 
 /*
 Allocate memory with Newx if it's
