@@ -36,7 +36,7 @@ find({
 		my $name = $File::Find::name;
 		if ( $name =~ /\.h$/ ) {
 			my ( $volume, $dir, $localfile ) = File::Spec->splitpath( $name );
-			copy( $name, File::Spec->catfile( $buildsrc, $localfile ) );
+			copy( $name, "$buildsrc/$localfile" );
 		} 
 	},
 },$src);
@@ -51,10 +51,19 @@ find({
 },$lib);
 
 # copy typemap to build
-copy( 'typemap', File::Spec->catfile( $build, 'typemap' ) );
+copy( 'typemap', "$build/typemap" );
+
+# copy unit tests to build
+if ( -d 't' ) {
+	opendir my $dh, 't';
+	make_path( "$build/t" );
+	while( my $entry = readdir $dh ) {
+		copy( "t/$entry", "$build/t/$entry" ) if $entry =~ /\.t$/;
+	}
+}
 
 # write Makefile.PL
-open my $fh, '>', File::Spec->catfile( $build, 'Makefile.PL' );
+open my $fh, '>', "$build/Makefile.PL";
 print $fh <<"MAKEFILE_PL";
 use ExtUtils::MakeMaker 7.24;
 
@@ -102,9 +111,9 @@ sub process_module {
 	
 		# generate the XS code and the module
 		my $hashref = {
-			'VERSION'           => $version,
-			'WRITE_PM'          => 1,
-			'SRC_LOCATION'      => $src,
+			'VERSION'      => $version,
+			'WRITE_PM'     => 1,
+			'SRC_LOCATION' => $src,
 		};
 		c2xs($mod, $pkg, $build, $hashref);
 		
@@ -125,7 +134,7 @@ sub process_module {
 		{
 			
 			# make a new directory, e.g. Bio::PhyloXS => $build/lib/Bio/
-			my @path = split /:/, $pkg;
+			my @path = split /::/, $pkg;
 			pop @path;
 			my $newdir = File::Spec->catdir( $build, 'lib', @path );
 			make_path($newdir) if not -d $newdir;
@@ -147,6 +156,6 @@ sub process_module {
 		my ( $volume, $dir, $localfile ) = File::Spec->splitpath($file);
 		my $newdir = File::Spec->catdir( $build, $dir );
 		make_path( $newdir ) if not -d $newdir;
-		copy( $file, File::Spec->catfile( $newdir, $localfile ) );		
+		copy( $file, "$newdir/$localfile" );		
 	}
 }
