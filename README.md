@@ -1,4 +1,4 @@
-Bio::Phylo::XS
+Bio::PhyloXS
 ==============
 
 Drop-in replacement of core Bio::Phylo modules implemented using Inline::C
