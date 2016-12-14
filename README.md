@@ -1,4 +1,4 @@
-inline-oo
-=========
+Bio::Phylo::XS
+==============
 
-A simple reminder to myself what hoops to jump through when building OO modules with inheritance using Inline::C
+Drop-in replacement of core Bio::Phylo modules implemented in C.
