@@ -1,6 +1,6 @@
-rm -rf Bio-PhyloXS-0.02
+rm -rf Bio-PhyloXS-0.01
 perl package_maker.pl
-cd Bio-PhyloXS-0.02
+cd Bio-PhyloXS-0.01
 perl Makefile.PL
 make
 
