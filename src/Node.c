@@ -125,11 +125,11 @@ int is_ancestor_of( Node* self, Node* desc ) {
 }
 
 int is_terminal( Node* self ) {
-	return av_len(((Listable*)self)->entities) != 0;
+	return ! av_exists(((Listable*)self)->entities, 0);
 }
 
 int is_internal( Node* self ) {
-	return av_len(((Listable*)self)->entities) == 0;
+	return av_exists(((Listable*)self)->entities, 0);
 }
 
 int is_root( Node* self ) {
