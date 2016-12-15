@@ -26,8 +26,17 @@ double get_branch_length(Node* self) {
 	return self->branch_length;
 }
 
-Node* set_branch_length(Node* self, double length) {
-	self->branch_length = length;
+Node* set_branch_length(Node* self, ...) {
+	Inline_Stack_Vars; // handle variable argument list
+	if ( Inline_Stack_Items == 2 && Inline_Stack_Item(1) != NULL ) {
+		SV* value = Inline_Stack_Item(1);
+		if ( looks_like_number(value) ) {
+			self->branch_length = SvNV(value);
+		}
+	}
+	else {	
+		self->branch_length = 0.0;
+	}
 	return self;
 }
 
@@ -49,8 +58,14 @@ Node* set_rank(Node* self, char * rank) {
 	return self;
 }
 
-Node* set_raw_parent( Node* self, Node* parent ) {
-	self->parent = parent;
+Node* set_raw_parent( Node* self, ... ) {
+	Inline_Stack_Vars;	// handle variable argument list
+	if ( Inline_Stack_Items == 2 && Inline_Stack_Item(1) != NULL ) {
+		self->parent = (Node*)SvIV(SvRV(Inline_Stack_Item(1)));
+	}
+	else {
+		self->parent = NULL;
+	}
 	return self;
 }
 
@@ -110,11 +125,11 @@ int is_ancestor_of( Node* self, Node* desc ) {
 }
 
 int is_terminal( Node* self ) {
-	return av_len(((Listable*)self)->entities) == 0;
+	return av_len(((Listable*)self)->entities) != 0;
 }
 
 int is_internal( Node* self ) {
-	return av_len(((Listable*)self)->entities) != 0;
+	return av_len(((Listable*)self)->entities) == 0;
 }
 
 int is_root( Node* self ) {
