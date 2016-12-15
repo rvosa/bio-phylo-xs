@@ -118,7 +118,7 @@ int get_identifiable(Writable* self) {
 	return self->is_identifiable;
 }
 
-char * get_tag(Writable* self) {
+const char * get_tag(Writable* self) {
 	int idx = ((Identifiable*)self)->_index;
 	return tag[idx];
 }
