@@ -41,7 +41,7 @@ void insert(Listable* self, Identifiable* element) {
 		av_push(self->entities, sv);
 		
 		if ( element->_type == _NODE_ ) {
-			set_tree((Node*)element,(Tree*)self);
+			((Node*)element)->tree = (Tree*)self;
 		}
 	}
 	else {
