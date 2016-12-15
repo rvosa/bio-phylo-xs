@@ -24,6 +24,7 @@ typedef struct {
 	HV* attributes;
 	AV* meta;
 	char * url;
+	char * xml_id;
 	int is_identifiable;
 	int is_suppress_ns;
 } Writable;

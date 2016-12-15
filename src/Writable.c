@@ -6,6 +6,7 @@ void initialize_writable(Writable* self){
 	self->attributes = newHV();
 	self->meta = newAV();
 	self->url = NULL;
+	self->xml_id = NULL;
 	self->is_identifiable = 1;
 	self->is_suppress_ns = 0;
 }
@@ -130,7 +131,8 @@ char * get_xml_id(Writable* self) {
 	char start = tag[idx][0];
 	char end = tag[idx][end_idx];
 	sprintf(xml_id,"%c%c%d",start,end,((Identifiable*)self)->id);
-	return xml_id;
+	self->xml_id = savepv(xml_id);
+	return self->xml_id;
 }
 
 Writable* set_base_uri(Writable* self, char * uri) {
