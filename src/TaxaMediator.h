@@ -11,6 +11,7 @@ typedef struct {
 	HV* one_to_many;
 } TaxaMediator;
 
+void initialize_taxamediator(TaxaMediator* self);
 TaxaMediator* register_object( TaxaMediator* self, Identifiable* object );
 TaxaMediator* unregister_object( TaxaMediator* self, Identifiable* object );
 TaxaMediator* set_link( TaxaMediator* self, ... );
