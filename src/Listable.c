@@ -1,7 +1,8 @@
-# include "src/types.h"
-# include "src/Identifiable.h"
-# include "src/Listable.h"
-# include "src/Writable.h"
+#include "src/types.h"
+#include "src/Identifiable.h"
+#include "src/Listable.h"
+#include "src/Writable.h"
+#include "src/Node.h"
 
 void initialize_listable(Listable* self){
 	initialize_writable((Writable*)self);
@@ -37,7 +38,11 @@ void insert(Listable* self, Identifiable* element) {
 		int idx = element->_index;
 		sv_setref_pv( sv, package[idx], (void*)element );
 		SvREFCNT_inc(sv);
-		av_push(self->entities, sv);		
+		av_push(self->entities, sv);
+		
+		if ( element->_type == _NODE_ ) {
+			set_tree((Node*)element,(Tree*)self);
+		}
 	}
 	else {
 		croak("Object mismatch!");
