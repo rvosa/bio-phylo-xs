@@ -1,4 +1,5 @@
 #include "src/types.h"
+#include "src/Exceptions.h"
 #include "src/Identifiable.h"
 #include "src/Listable.h"
 #include "src/Writable.h"
@@ -45,7 +46,8 @@ void insert(Listable* self, Identifiable* element) {
 		}
 	}
 	else {
-		croak("Object mismatch!");
+		//croak("Object mismatch!");
+		croak_sv(except("ObjectMismatch","Can't insert this in that"));
 	}
 }
 
