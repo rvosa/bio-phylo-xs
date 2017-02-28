@@ -46,8 +46,7 @@ void insert(Listable* self, Identifiable* element) {
 		}
 	}
 	else {
-		//croak("Object mismatch!");
-		croak_sv(except("ObjectMismatch","Can't insert this in that"));
+		croak("Object mismatch!");		
 	}
 }
 
