@@ -26,7 +26,7 @@ double get_branch_length(Node* self) {
 	return self->branch_length;
 }
 
-Node* set_branch_length(Node* self, ...) {
+Node* set_raw_branch_length(Node* self, ...) {
 	Inline_Stack_Vars; // handle variable argument list
 	if ( Inline_Stack_Items == 2 && Inline_Stack_Item(1) != NULL ) {
 		SV* value = Inline_Stack_Item(1);
