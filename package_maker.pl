@@ -50,8 +50,9 @@ find({
 	},	
 },$lib);
 
-# copy typemap to build
+# copy typemap and README.md to build
 copy( 'typemap', "$build/typemap" );
+copy( 'README.md', "$build/README.md" );
 
 # copy unit tests to build
 if ( -d 't' ) {
