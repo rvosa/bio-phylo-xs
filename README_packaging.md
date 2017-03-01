@@ -11,7 +11,8 @@ with recent versions of ExtUtils::MakeMaker (the "standard" build/install system
 without Inline::C. For this to work, the following needs to happen:
 
 1. make sure you have InlineX::C2XS installed.
-2. run the script `package_maker.pl` (possibly with the `--version x.x` flag)
-3. step into the directory Bio-PhyloXS-x.x and do the usual `perl Makefile.PL && make dist`
+2. run the script `rebuild.sh`. This will created a CPAN-compatible folder structure and 
+   compile the contents. You can now step into this folder and run `make test`
+3. to make a distribution, `make clean`, `make manifest`, `make dist`
 
 
