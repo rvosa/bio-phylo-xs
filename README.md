@@ -1,5 +1,5 @@
-Bio::PhyloXS - Core Bio::Phylo modules implemented in XS/C
-==========================================================
+Bio::PhyloXS - Core Bio::Phylo in XS/C
+======================================
 This distribution overrides some of the core modules of 
 Bio::Phylo in the C programming language (technically, 
 using a type of glue code called XS). Used correctly and
