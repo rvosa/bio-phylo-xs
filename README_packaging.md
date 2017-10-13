@@ -14,9 +14,10 @@ without Inline::C. For this to work, the following needs to happen:
 2. run the script `rebuild.sh`. This will created a CPAN-compatible folder structure and 
    compile the contents. You can now step into this folder and run `make test`
 3. to make a distribution:
-
+```shell
     make clean
     rm Makefile.old
     perl Makefile.PL
     make manifest
     make dist
+```
