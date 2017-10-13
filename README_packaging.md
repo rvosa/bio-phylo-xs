@@ -13,6 +13,10 @@ without Inline::C. For this to work, the following needs to happen:
 1. make sure you have InlineX::C2XS installed.
 2. run the script `rebuild.sh`. This will created a CPAN-compatible folder structure and 
    compile the contents. You can now step into this folder and run `make test`
-3. to make a distribution, `make clean`, `make manifest`, `make dist`
+3. to make a distribution:
 
-
+    make clean
+    rm Makefile.old
+    perl Makefile.PL
+    make manifest
+    make dist
