@@ -11,14 +11,14 @@ use InlineX::C2XS qw(c2xs);
 # process command line arguments
 my $lib     = './lib'; # root of the pure perl modules
 my $build   = './Bio-PhyloXS'; # distribution name
-my $version = '0.01'; # distribution version number
+my $version = 'v0.1.0'; # distribution version number
 my $t       = '../bio-phylo/t'; # location of bio::phylo unit tests
 my $src     = './src'; # location of header files
 my $package = 'Bio::PhyloXS'; # package/release name
 GetOptions(
 	'lib=s'     => \$lib,
 	'build=s'   => \$build,
-	'version=f' => \$version,
+	'version=s' => \$version,
 	't=s'       => \$t,
 	'package=s' => \$package,
 );

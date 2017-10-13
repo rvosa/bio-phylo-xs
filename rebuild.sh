@@ -1,6 +1,5 @@
 # The release version number. 
-# TODO: convert to semantic versioning
-VERSION=0.01
+VERSION=`grep 'version' lib/Bio/PhyloXS.pm | cut -f2 -d'"'`
 
 # Base package name, which also becomes
 # the base name of the release
