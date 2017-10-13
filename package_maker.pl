@@ -58,9 +58,10 @@ copy( 'README.md', "$build/README.md" );
 if ( -d 't' ) {
 	opendir my $dh, 't';
 	make_path( "$build/t" );
-	while( my $entry = readdir $dh ) {
-		copy( "t/$entry", "$build/t/$entry" ) if $entry =~ /\.t$/;
-	}
+	copy( "t/load.t", "$build/t/load.t" );
+	#while( my $entry = readdir $dh ) {
+	#	copy( "t/$entry", "$build/t/$entry" ) if $entry =~ /\.t$/;
+	#}
 }
 
 # write Makefile.PL
