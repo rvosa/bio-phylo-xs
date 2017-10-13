@@ -6,6 +6,12 @@ using a type of glue code called XS). Used correctly and
 under the right circumstances, this can speed up a lot 
 scripts by an order of magnitude or more.
 
+Release
+-------
+The most recent release is:
+
+[![DOI](https://zenodo.org/badge/18334671.svg)](https://zenodo.org/badge/latestdoi/18334671)
+
 Requires
 --------
 * Bio::Phylo v0.52 or later
